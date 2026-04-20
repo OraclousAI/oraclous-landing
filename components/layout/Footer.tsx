@@ -41,18 +41,18 @@ const NAV_COLUMNS = [
   {
     heading: 'Platform',
     links: [
-      { label: 'Architecture', href: '#architecture' },
-      { label: 'The Loop',     href: '#loop' },
-      { label: 'Agents',       href: '#agents' },
-      { label: 'Roadmap',      href: '#roadmap' },
+      { label: 'Architecture', href: '/architecture' },
+      { label: 'The Loop',     href: '/#loop' },
+      { label: 'Agents',       href: '/agents' },
+      { label: 'Roadmap',      href: '/roadmap' },
     ],
   },
   {
     heading: 'Resources',
     links: [
-      { label: 'Documentation', href: '#' },
+      { label: 'Documentation', href: '/docs' },
       { label: 'GitHub',        href: 'https://github.com/oraclous-ai' },
-      { label: 'Changelog',     href: '#' },
+      { label: 'Changelog',     href: '/roadmap' },
     ],
   },
 ] as const
