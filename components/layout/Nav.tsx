@@ -111,7 +111,7 @@ export function Nav() {
   const isLoaderComplete  = useUIStore((s) => s.isLoaderComplete)
   const activeSection     = useUIStore((s) => s.activeSection)
   const setActiveSection  = useUIStore((s) => s.setActiveSection)
-  const githubRef                             = useMagnetic<HTMLAnchorElement>(0.35)
+  const callRef                             = useMagnetic<HTMLAnchorElement>(0.35)
   const { onHoverEnter, onHoverLeave }        = useCursorState()
   const { ref: logoTextRef, scramble }        = useTextScramble<HTMLSpanElement>()
 
@@ -309,7 +309,7 @@ export function Nav() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             {/* Book a Call CTA — desktop */}
             <a
-              ref={githubRef}
+              ref={callRef}
               href="#"
               onClick={(e) => { e.preventDefault(); openCalendly() }}
               style={{

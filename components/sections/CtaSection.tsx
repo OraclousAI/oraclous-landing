@@ -36,7 +36,6 @@ export function CtaSection() {
   const glow2Ref   = useRef<HTMLDivElement>(null)
   const dotGridRef = useRef<HTMLDivElement>(null)
   const callRef    = useMagnetic<HTMLAnchorElement>(0.4)
-  const githubRef  = useMagnetic<HTMLAnchorElement>(0.2)
   const isMobile   = useIsMobile()
 
   /* Ambient pulsing glows */
