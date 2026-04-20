@@ -71,15 +71,34 @@ export function Nav() {
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
 
-  const isLoaderComplete = useUIStore((s) => s.isLoaderComplete)
-  const activeSection    = useUIStore((s) => s.activeSection)
-  const githubRef        = useMagnetic<HTMLAnchorElement>(0.35)
+  const isLoaderComplete  = useUIStore((s) => s.isLoaderComplete)
+  const activeSection     = useUIStore((s) => s.activeSection)
+  const setActiveSection  = useUIStore((s) => s.setActiveSection)
+  const githubRef         = useMagnetic<HTMLAnchorElement>(0.35)
 
   /* Scroll state ---------------------------------------------------- */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  /* Scroll-spy — active section follows viewport ------------------- */
+  useEffect(() => {
+    const ids = NAV_LINKS.map(l => l.href.replace('#', ''))
+    const elements = ids.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[]
+    if (!elements.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id)
+        })
+      },
+      { rootMargin: '-30% 0px -60% 0px', threshold: 0 },
+    )
+    elements.forEach(el => observer.observe(el))
+    return () => observer.disconnect()
   }, [])
 
   /* Nav entrance after loader --------------------------------------- */
@@ -138,6 +157,7 @@ export function Nav() {
 
   /* Shared link hover handlers ------------------------------------- */
   const onLinkEnter = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.currentTarget.style.backgroundColor) return
     e.currentTarget.style.color = 'var(--color-text-primary)'
   }, [])
   const onLinkLeave = useCallback((e: React.MouseEvent<HTMLAnchorElement>, isActive: boolean) => {
@@ -218,34 +238,23 @@ export function Nav() {
                   onMouseEnter={onLinkEnter}
                   onMouseLeave={(e) => onLinkLeave(e, isActive)}
                   style={{
-                    position: 'relative',
                     fontFamily: 'var(--font-mono)',
                     fontSize: 'var(--text-xs)',
                     letterSpacing: 'var(--tracking-wide)',
                     textTransform: 'uppercase',
-                    color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-tertiary)',
                     textDecoration: 'none',
-                    transition: 'color 0.2s',
-                    paddingBottom: '2px',
+                    padding: '0.3rem 0.75rem',
+                    borderRadius: 'var(--radius-full)',
+                    transition: 'color 0.2s, background-color 0.2s, box-shadow 0.2s',
+                    color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-tertiary)',
+                    backgroundColor: isActive ? 'rgba(255,255,255,0.07)' : 'transparent',
+                    border: isActive ? '1px solid rgba(255,255,255,0.13)' : '1px solid transparent',
+                    boxShadow: isActive
+                      ? 'inset 0 1px 0 rgba(255,255,255,0.10), 0 2px 12px rgba(0,0,0,0.35), 0 0 16px rgba(67,97,238,0.15)'
+                      : 'none',
                   }}
                 >
                   {label}
-                  {isActive && (
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        position: 'absolute',
-                        bottom: '-6px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: '4px',
-                        height: '4px',
-                        borderRadius: '50%',
-                        backgroundColor: 'var(--color-accent)',
-                        boxShadow: 'var(--glow-accent-sm)',
-                      }}
-                    />
-                  )}
                 </Link>
               )
             })}
