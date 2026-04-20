@@ -10,7 +10,7 @@ const CSP = [
   "script-src 'self' 'unsafe-inline' https://assets.calendly.com",
   "style-src 'self' 'unsafe-inline' https://assets.calendly.com",
   "img-src 'self' data: https: blob:",
-  "font-src 'self'",
+  "font-src 'self' https://fonts.gstatic.com",
   "connect-src 'self' https://calendly.com https://api.calendly.com",
   "frame-src https://calendly.com",
   "object-src 'none'",

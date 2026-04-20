@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Syne, DM_Sans, JetBrains_Mono } from 'next/font/google'
-import Script from 'next/script'
 import { Providers } from '@/providers'
 import { Cursor } from '@/components/layout/Cursor'
 import { Loader } from '@/components/layout/Loader'
@@ -97,8 +96,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
-        <link rel="preconnect" href="https://assets.calendly.com" />
-        <link rel="dns-prefetch" href="https://assets.calendly.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -112,7 +109,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Nav />
           {children}
           <Footer />
-          <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
         </Providers>
       </body>
     </html>
