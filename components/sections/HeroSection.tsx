@@ -209,7 +209,7 @@ export function HeroSection() {
         padding: '0 var(--section-padding-x)',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: 'var(--space-16)',
+        gap: 'var(--space-4)',
         alignItems: 'center',
         alignSelf: 'center',
       }}>
@@ -275,7 +275,7 @@ export function HeroSection() {
           </p>
 
           {/* CTAs */}
-          <div data-hero-ctas="" style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-start', flexWrap: 'wrap', marginBottom: '3.5rem' }}>
+          <div data-hero-ctas="" style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-start', marginBottom: '3.5rem' }}>
             <a
               ref={primaryRef}
               href="#"
@@ -285,9 +285,9 @@ export function HeroSection() {
               }}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                padding: '0.9rem 2rem', background: 'var(--gradient-accent)',
+                padding: '0.6rem 1rem', background: 'var(--gradient-accent)',
                 borderRadius: 'var(--radius-full)', fontFamily: 'var(--font-mono)',
-                fontSize: 'var(--text-sm)', letterSpacing: 'var(--tracking-wide)',
+                fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)',
                 textTransform: 'uppercase', color: '#fff', textDecoration: 'none',
                 boxShadow: 'var(--glow-accent-md)',
               }}
@@ -305,10 +305,10 @@ export function HeroSection() {
               href="#loop"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                padding: '0.9rem 2rem',
+                padding: '0.6rem 1rem',
                 border: '1px solid var(--color-border-strong)',
                 borderRadius: 'var(--radius-full)', fontFamily: 'var(--font-mono)',
-                fontSize: 'var(--text-sm)', letterSpacing: 'var(--tracking-wide)',
+                fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)',
                 textTransform: 'uppercase', color: 'var(--color-text-secondary)',
                 textDecoration: 'none',
                 transition: 'border-color 0.25s, color 0.25s',
