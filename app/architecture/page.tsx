@@ -212,6 +212,15 @@ export default function ArchitecturePage() {
 
   const activeLayer = LAYERS.find(l => l.id === activeId) ?? LAYERS[0]
 
+  const handleLayerSelect = (id: string) => {
+    setActiveId(id)
+    if (isMobile && detailRef.current) {
+      setTimeout(() => {
+        detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 50)
+    }
+  }
+
   /* Animate detail panel on layer change */
   useEffect(() => {
     const panel = detailRef.current
@@ -290,7 +299,7 @@ export default function ArchitecturePage() {
             {LAYERS.map((layer, i) => (
               <div
                 key={layer.id}
-                onClick={() => setActiveId(layer.id)}
+                onClick={() => handleLayerSelect(layer.id)}
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                   padding: 'var(--space-6)',
@@ -366,13 +375,13 @@ export default function ArchitecturePage() {
               key={layer.id}
               layer={layer}
               isActive={activeId === layer.id}
-              onClick={() => setActiveId(layer.id)}
+              onClick={() => handleLayerSelect(layer.id)}
             />
           ))}
         </div>
 
         {/* Detail panel */}
-        <div ref={detailRef} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+        <div ref={detailRef} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)', scrollMarginTop: '88px' }}>
 
           {/* Layer header */}
           <div>
@@ -469,35 +478,6 @@ export default function ArchitecturePage() {
                 </p>
               </div>
             ))}
-          </div>
-
-          {/* CTA row */}
-          <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center', paddingTop: 'var(--space-4)' }}>
-            <Link href="/agents" style={{
-              display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-              fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
-              letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
-              color: activeLayer.accent, textDecoration: 'none',
-              border: `1px solid ${activeLayer.accentBorder}`,
-              borderRadius: 'var(--radius-full)', padding: '0.5rem 1rem',
-              background: activeLayer.accentDim, transition: 'box-shadow 0.2s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 20px ${activeLayer.accentGlow}` }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none' }}
-            >
-              View agent team →
-            </Link>
-            <Link href="/roadmap" style={{
-              fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
-              letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
-              color: 'var(--color-text-muted)', textDecoration: 'none',
-              transition: 'color 0.2s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-text-secondary)' }}
-            onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-text-muted)' }}
-            >
-              Roadmap →
-            </Link>
           </div>
         </div>
 
