@@ -63,6 +63,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
+        <link rel="preconnect" href="https://assets.calendly.com" />
+        <link rel="dns-prefetch" href="https://assets.calendly.com" />
         <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
       </head>
       <body>
