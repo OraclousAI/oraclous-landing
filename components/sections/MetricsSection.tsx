@@ -348,8 +348,10 @@ function MetricCard({ m, i, num, suffix, isActive, onActivate, compact }: {
       onMouseLeave={onMouseLeave}
       style={{
         padding: compact ? 'var(--space-6) var(--space-4)' : 'var(--space-8) var(--space-6)',
-        border: compact ? '1px solid var(--color-border)' : undefined,
-        borderLeft: !compact && i > 0 ? '1px solid var(--color-border)' : undefined,
+        borderTop: compact ? '1px solid var(--color-border)' : 'none',
+        borderRight: compact ? '1px solid var(--color-border)' : 'none',
+        borderBottom: compact ? '1px solid var(--color-border)' : 'none',
+        borderLeft: (compact || i > 0) ? '1px solid var(--color-border)' : 'none',
         textAlign: 'center',
         position: 'relative',
         cursor: 'default',

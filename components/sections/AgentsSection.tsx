@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { gsap } from '@/lib/gsap'
 import { EASE } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/motion'
@@ -119,9 +119,8 @@ const PIPELINE_STAGES = [
 function PipelineBar({ activeStage, onSelect }: { activeStage: string | null; onSelect: (name: string | null) => void }) {
   return (
     <div
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
+        display: 'flex', alignItems: 'center',
         gap: 0, marginBottom: 'var(--space-16)', flexWrap: 'nowrap',
         overflowX: 'auto', paddingBottom: '4px',
         scrollbarWidth: 'none',
@@ -129,12 +128,14 @@ function PipelineBar({ activeStage, onSelect }: { activeStage: string | null; on
     >
       {PIPELINE_STAGES.map((stage, i) => {
         const isActive = activeStage === stage.name
+        const nextColor = PIPELINE_STAGES[i + 1]?.color
         return (
-          <div key={stage.name} style={{ display: 'flex', alignItems: 'center' }}>
+          <React.Fragment key={stage.name}>
             {/* Stage node */}
             <button
               onClick={() => onSelect(isActive ? null : stage.name)}
               style={{
+                flexShrink: 0,
                 display: 'flex', flexDirection: 'column', alignItems: 'center',
                 gap: '0.4rem', background: 'none', border: 'none', cursor: 'pointer',
                 padding: '0.5rem',
@@ -165,16 +166,20 @@ function PipelineBar({ activeStage, onSelect }: { activeStage: string | null; on
               }}>{stage.name}</span>
             </button>
 
-            {/* Arrow connector between stages */}
+            {/* Connector — flex: 1 so it fills all remaining horizontal space */}
             {i < PIPELINE_STAGES.length - 1 && (
-              <svg width="20" height="10" viewBox="0 0 20 10" fill="none" aria-hidden="true">
-                <line x1="0" y1="5" x2="14" y2="5"
-                  stroke={`${stage.color}40`} strokeWidth="1.5" />
-                <path d="M12 2 L16 5 L12 8" stroke={`${stage.color}40`} strokeWidth="1.5"
-                  strokeLinecap="round" strokeLinejoin="round" fill="none" />
-              </svg>
+              <div style={{ flex: 1, minWidth: '8px', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                <div style={{
+                  flex: 1,
+                  height: '1.5px',
+                  background: `linear-gradient(90deg, ${stage.color}40, ${nextColor}40)`,
+                }} />
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>
+                  <path d="M1 1.5 L6.5 4 L1 6.5" stroke={`${stage.color}50`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
             )}
-          </div>
+          </React.Fragment>
         )
       })}
     </div>

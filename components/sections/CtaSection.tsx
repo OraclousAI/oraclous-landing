@@ -102,7 +102,7 @@ export function CtaSection() {
       }}>
 
         {/* LEFT: headline */}
-        <div>
+        <div style={{ minWidth: 0 }}>
           <FadeUp>
             <p style={{
               fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
@@ -115,7 +115,7 @@ export function CtaSection() {
 
           <WordReveal as="h2" style={{
             fontFamily: 'var(--font-display)', fontWeight: 800,
-            fontSize: 'clamp(2.4rem, 4vw, 3.75rem)',
+            fontSize: isMobile ? 'clamp(1.75rem, 5vw, 2.4rem)' : 'clamp(2.4rem, 4vw, 3.75rem)',
             lineHeight: 'var(--leading-tight)',
             letterSpacing: 'var(--tracking-tighter)',
             color: 'var(--color-text-primary)',
@@ -125,7 +125,7 @@ export function CtaSection() {
           </WordReveal>
           <WordReveal as="h2" delay={0.15} style={{
             fontFamily: 'var(--font-display)', fontWeight: 800,
-            fontSize: 'clamp(2.4rem, 4vw, 3.75rem)',
+            fontSize: isMobile ? 'clamp(1.75rem, 5vw, 2.4rem)' : 'clamp(2.4rem, 4vw, 3.75rem)',
             lineHeight: 'var(--leading-tight)',
             letterSpacing: 'var(--tracking-tighter)',
             background: 'var(--gradient-accent)',
@@ -160,12 +160,13 @@ export function CtaSection() {
         </div>
 
         {/* RIGHT: CTA card */}
+        <div style={{ minWidth: 0 }}>
         <FadeUp delay={0.2}>
           <div style={{
             background: 'linear-gradient(135deg, rgba(67,97,238,0.08) 0%, rgba(13,13,26,0.95) 100%)',
             border: '1px solid rgba(67,97,238,0.22)',
             borderRadius: 'var(--radius-lg)',
-            padding: 'var(--space-10)',
+            padding: isMobile ? 'var(--space-5)' : 'var(--space-10)',
             display: 'flex', flexDirection: 'column', gap: 'var(--space-6)',
           }}>
             <div>
@@ -198,7 +199,7 @@ export function CtaSection() {
                 onClick={(e) => { e.preventDefault(); burstParticles(e.clientX, e.clientY); openCalendly() }}
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
-                  padding: '0.85rem 1.5rem', background: 'var(--gradient-accent)',
+                  padding: isMobile ? '0.7rem 1rem' : '0.85rem 1.5rem', background: 'var(--gradient-accent)',
                   borderRadius: 'var(--radius-full)', fontFamily: 'var(--font-mono)',
                   fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)',
                   textTransform: 'uppercase', color: '#fff', textDecoration: 'none',
@@ -216,7 +217,7 @@ export function CtaSection() {
                 target="_blank" rel="noopener noreferrer"
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
-                  padding: '0.85rem 1.5rem',
+                  padding: isMobile ? '0.7rem 1rem' : '0.85rem 1.5rem',
                   border: '1px solid var(--color-border-strong)',
                   borderRadius: 'var(--radius-full)', fontFamily: 'var(--font-mono)',
                   fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)',
@@ -242,6 +243,7 @@ export function CtaSection() {
             </p>
           </div>
         </FadeUp>
+        </div>
 
       </div>
     </section>

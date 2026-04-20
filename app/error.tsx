@@ -94,10 +94,11 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         </p>
 
         {/* Actions */}
-        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div suppressHydrationWarning style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button
             type="button"
             onClick={reset}
+            suppressHydrationWarning
             style={{
               padding: '0.6rem 1.4rem',
               whiteSpace: 'nowrap',
@@ -121,6 +122,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 
           <a
             href="/"
+            suppressHydrationWarning
             style={{
               padding: '0.6rem 1.4rem',
               whiteSpace: 'nowrap',

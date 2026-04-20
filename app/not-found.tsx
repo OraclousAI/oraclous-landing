@@ -138,10 +138,12 @@ export default function NotFound() {
         {/* CTA */}
         <div
           data-animate=""
+          suppressHydrationWarning
           style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap', opacity: 0 }}
         >
           <Link
             href="/"
+            suppressHydrationWarning
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -167,6 +169,7 @@ export default function NotFound() {
 
           <Link
             href="/architecture"
+            suppressHydrationWarning
             style={{
               display: 'inline-flex',
               alignItems: 'center',

@@ -288,68 +288,80 @@ export default function RoadmapPage() {
       <div style={{
         maxWidth: 'var(--max-w-content)', margin: '0 auto',
         padding: '0 var(--section-padding-x) var(--space-10)',
-        display: 'flex',
-        flexDirection: isMobile ? 'column' : 'row',
-        gap: isMobile ? 'var(--space-3)' : 'var(--space-6)',
-        flexWrap: 'wrap',
-        alignItems: isMobile ? 'flex-start' : 'center',
       }}>
-        {/* Status filters */}
-        <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
-          {(['all', 'shipped', 'in-progress', 'committed'] as StatusFilter[]).map(key => {
-            const cfg = key === 'all' ? null : STATUS_CONFIG[key as RoadmapStatus]
-            const isActive = statusFilter === key
-            return (
-              <button key={key} type="button" onClick={() => setStatusFilter(key)}
-                style={{
-                  fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
-                  letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
-                  padding: '0.3rem 0.9rem', borderRadius: 'var(--radius-full)', cursor: 'pointer',
-                  transition: 'all 0.2s',
-                  border: `1px solid ${isActive ? (cfg?.border ?? 'rgba(255,255,255,0.18)') : 'var(--color-border)'}`,
-                  background: isActive ? (cfg?.bg ?? 'rgba(255,255,255,0.06)') : 'transparent',
-                  color: isActive ? (cfg?.color ?? 'var(--color-text-primary)') : 'var(--color-text-muted)',
-                }}
-              >
-                {key === 'all' ? 'All Status' : cfg!.label}
-              </button>
-            )
-          })}
-        </div>
-
-        {/* Divider — desktop only */}
-        {!isMobile && <div style={{ width: '1px', height: '24px', background: 'var(--color-border)' }} />}
-
-        {/* Layer filters */}
-        <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
-          {(['all', 1, 2, 3] as LayerFilter[]).map(key => {
-            const cfg = key === 'all' ? null : LAYER_CONFIG[key as number]
-            const isActive = layerFilter === key
-            return (
-              <button key={String(key)} type="button" onClick={() => setLayerFilter(key)}
-                style={{
-                  fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
-                  letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
-                  padding: '0.3rem 0.9rem', borderRadius: 'var(--radius-full)', cursor: 'pointer',
-                  transition: 'all 0.2s',
-                  border: `1px solid ${isActive ? (cfg?.border ?? 'rgba(255,255,255,0.18)') : 'var(--color-border)'}`,
-                  background: isActive ? (cfg?.bg ?? 'rgba(255,255,255,0.06)') : 'transparent',
-                  color: isActive ? (cfg?.color ?? 'var(--color-text-primary)') : 'var(--color-text-muted)',
-                }}
-              >
-                {key === 'all' ? 'All Layers' : `L${key} · ${cfg!.label}`}
-              </button>
-            )
-          })}
-        </div>
-
-        <span style={{
-          marginLeft: 'auto',
-          fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
-          color: 'var(--color-text-muted)', letterSpacing: 'var(--tracking-wide)',
+        <div style={{
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: isMobile ? 'var(--space-3)' : 'var(--space-6)',
+          ...(isMobile ? {} : { flexWrap: 'wrap', alignItems: 'center' }),
         }}>
-          {visibleCount} item{visibleCount !== 1 ? 's' : ''}
-        </span>
+          {/* Status filters — own scrollable row on mobile */}
+          <div style={{
+            overflowX: isMobile ? 'auto' : 'visible',
+            ...(isMobile ? { scrollbarWidth: 'none' } : {}),
+          } as React.CSSProperties}>
+            <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+              {(['all', 'shipped', 'in-progress', 'committed'] as StatusFilter[]).map(key => {
+                const cfg = key === 'all' ? null : STATUS_CONFIG[key as RoadmapStatus]
+                const isActive = statusFilter === key
+                return (
+                  <button key={key} type="button" onClick={() => setStatusFilter(key)}
+                    style={{
+                      fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+                      letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
+                      padding: '0.3rem 0.9rem', borderRadius: 'var(--radius-full)', cursor: 'pointer',
+                      transition: 'all 0.2s', whiteSpace: 'nowrap',
+                      border: `1px solid ${isActive ? (cfg?.border ?? 'rgba(255,255,255,0.18)') : 'var(--color-border)'}`,
+                      background: isActive ? (cfg?.bg ?? 'rgba(255,255,255,0.06)') : 'transparent',
+                      color: isActive ? (cfg?.color ?? 'var(--color-text-primary)') : 'var(--color-text-muted)',
+                    }}
+                  >
+                    {key === 'all' ? 'All Status' : cfg!.label}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Divider — desktop only */}
+          {!isMobile && <div style={{ width: '1px', height: '24px', background: 'var(--color-border)', flexShrink: 0 }} />}
+
+          {/* Layer filters — own scrollable row on mobile */}
+          <div style={{
+            overflowX: isMobile ? 'auto' : 'visible',
+            ...(isMobile ? { scrollbarWidth: 'none' } : {}),
+          } as React.CSSProperties}>
+            <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+              {(['all', 1, 2, 3] as LayerFilter[]).map(key => {
+                const cfg = key === 'all' ? null : LAYER_CONFIG[key as number]
+                const isActive = layerFilter === key
+                return (
+                  <button key={String(key)} type="button" onClick={() => setLayerFilter(key)}
+                    style={{
+                      fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+                      letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
+                      padding: '0.3rem 0.9rem', borderRadius: 'var(--radius-full)', cursor: 'pointer',
+                      transition: 'all 0.2s', whiteSpace: 'nowrap',
+                      border: `1px solid ${isActive ? (cfg?.border ?? 'rgba(255,255,255,0.18)') : 'var(--color-border)'}`,
+                      background: isActive ? (cfg?.bg ?? 'rgba(255,255,255,0.06)') : 'transparent',
+                      color: isActive ? (cfg?.color ?? 'var(--color-text-primary)') : 'var(--color-text-muted)',
+                    }}
+                  >
+                    {key === 'all' ? 'All Layers' : `L${key} · ${cfg!.label}`}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          <span style={{
+            marginLeft: isMobile ? undefined : 'auto', flexShrink: 0,
+            fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+            color: 'var(--color-text-muted)', letterSpacing: 'var(--tracking-wide)',
+          }}>
+            {visibleCount} item{visibleCount !== 1 ? 's' : ''}
+          </span>
+        </div>
       </div>
 
       {/* ── Timeline ──────────────────────────────────────────────── */}

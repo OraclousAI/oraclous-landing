@@ -367,6 +367,7 @@ export function Nav() {
         aria-modal="true"
         aria-label="Mobile navigation"
         inert={!menuOpen || undefined}
+        suppressHydrationWarning
         style={{
           position: 'fixed',
           inset: 0,
