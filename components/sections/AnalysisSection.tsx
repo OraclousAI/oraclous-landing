@@ -197,14 +197,7 @@ export function AnalysisSection() {
   const sectionRef    = useRef<HTMLElement>(null)
   const containerRef  = useRef<HTMLDivElement>(null)
   const [lockedIdx, setLockedIdx] = useState(0)
-  const [activeIdx,  setActiveIdx]  = useState(-1)
-
-  /* Auto-expand first card after 900ms */
-  useEffect(() => {
-    if (prefersReducedMotion()) { setActiveIdx(0); return }
-    const t = setTimeout(() => setActiveIdx(0), 900)
-    return () => clearTimeout(t)
-  }, [])
+  const [activeIdx,  setActiveIdx]  = useState(0)
 
   /* Scroll entrance — accordion flies in as unit */
   useEffect(() => {

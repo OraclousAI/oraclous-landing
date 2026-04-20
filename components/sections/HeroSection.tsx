@@ -246,7 +246,7 @@ export function HeroSection() {
           {/* Headline */}
           <h1 style={{
             fontFamily: 'var(--font-display)', fontWeight: 800,
-            fontSize: 'var(--text-5xl)',
+            fontSize: 'clamp(1.85rem, 2.8vw, 2.9rem)',
             lineHeight: 'var(--leading-tight)',
             letterSpacing: 'var(--tracking-tighter)',
             marginBottom: '1.75rem',
@@ -266,9 +266,9 @@ export function HeroSection() {
 
           {/* Sub */}
           <p data-hero-sub="" style={{
-            fontSize: 'var(--text-lg)', lineHeight: 'var(--leading-relaxed)',
+            fontSize: 'var(--text-base)', lineHeight: 'var(--leading-relaxed)',
             color: 'var(--color-text-secondary)',
-            maxWidth: '580px', marginBottom: '2.5rem',
+            maxWidth: '440px', marginBottom: '2.5rem',
           }}>
             18 specialist agents. One knowledge graph. Complete automation of the
             fine-tuning lifecycle — on your infrastructure, with full data ownership.
@@ -348,14 +348,14 @@ export function HeroSection() {
         </div>
 
         {/* RIGHT: loop ring visualization */}
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <svg ref={ringRef} viewBox="0 0 400 400" width="100%" style={{ display: 'block', overflow: 'visible', opacity: 0 }} data-hero-ring="">
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--space-4)' }}>
+          <svg ref={ringRef} viewBox="-20 -20 440 440" width="100%" style={{ display: 'block', overflow: 'visible', opacity: 0, maxWidth: '520px' }} data-hero-ring="">
             {/* Outer subtle ring */}
-            <circle cx={CX} cy={CY} r={R + 22} fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            <circle cx={CX} cy={CY} r={R + 22} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
             {/* Main track */}
-            <circle cx={CX} cy={CY} r={R} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1.5" />
+            <circle cx={CX} cy={CY} r={R} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
             {/* Inner track */}
-            <circle cx={CX} cy={CY} r={R - 22} fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            <circle cx={CX} cy={CY} r={R - 22} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
 
             {/* Colored arcs between nodes */}
             {RING_COLORS.map((color, i) => {
@@ -366,7 +366,7 @@ export function HeroSection() {
               return (
                 <path key={i}
                   d={`M ${x1} ${y1} A ${R} ${R} 0 0 1 ${x2} ${y2}`}
-                  fill="none" stroke={color} strokeWidth="1.5" opacity={0.4}
+                  fill="none" stroke={color} strokeWidth="2.5" opacity={0.55}
                 />
               )
             })}
@@ -374,8 +374,8 @@ export function HeroSection() {
             {/* Stage nodes */}
             {RING_NODES.map((pos, i) => (
               <g key={i} transform={`translate(${pos.x}, ${pos.y})`} data-ring-node="">
-                <circle r="14" fill="#0D0D1A" stroke={RING_COLORS[i]} strokeWidth="1.5" opacity={0.8}
-                  style={{ filter: `drop-shadow(0 0 6px ${RING_COLORS[i]}80)` } as React.CSSProperties} />
+                <circle r="14" fill="#0D0D1A" stroke={RING_COLORS[i]} strokeWidth="2" opacity={0.9}
+                  style={{ filter: `drop-shadow(0 0 8px ${RING_COLORS[i]}90)` } as React.CSSProperties} />
                 <text textAnchor="middle" dominantBaseline="central"
                   fontFamily="monospace" fontSize="7" fontWeight="700"
                   fill={RING_COLORS[i]} style={{ pointerEvents: 'none' } as React.CSSProperties}>
