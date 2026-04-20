@@ -10,8 +10,10 @@ import { useMagnetic } from '@/hooks/useMagnetic'
 /* ─── Static data ────────────────────────────────────────────────────── */
 
 const NAV_LINKS = [
+  { href: '#problem',      label: 'Problem' },
   { href: '#architecture', label: 'Architecture' },
   { href: '#loop',         label: 'The Loop' },
+  { href: '#analysis',     label: 'Analysis' },
   { href: '#agents',       label: 'Agents' },
   { href: '#roadmap',      label: 'Roadmap' },
 ] as const
@@ -62,13 +64,11 @@ function Hamburger({ open }: HamburgerProps) {
 /* ─── Nav ────────────────────────────────────────────────────────────── */
 
 export function Nav() {
-  const navRef   = useRef<HTMLElement>(null)
-  const menuRef  = useRef<HTMLDivElement>(null)
+  const navRef    = useRef<HTMLElement>(null)
+  const menuRef   = useRef<HTMLDivElement>(null)
   const menuTlRef = useRef<gsap.core.Timeline | null>(null)
-  const lastY    = useRef(0)
 
   const [scrolled,  setScrolled]  = useState(false)
-  const [hidden,    setHidden]    = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
 
   const isLoaderComplete = useUIStore((s) => s.isLoaderComplete)
@@ -77,12 +77,7 @@ export function Nav() {
 
   /* Scroll state ---------------------------------------------------- */
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY
-      setScrolled(y > 80)
-      setHidden(y > 300 && y > lastY.current)
-      lastY.current = y
-    }
+    const onScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -163,17 +158,12 @@ export function Nav() {
           right: 0,
           zIndex: 'var(--z-sticky)',
           opacity: 0,
-          transition: [
-            'background-color 0.4s var(--ease-entrance)',
-            'border-color 0.4s var(--ease-entrance)',
-            'backdrop-filter 0.4s var(--ease-entrance)',
-            'transform 0.5s var(--ease-entrance)',
-          ].join(', '),
-          backgroundColor: scrolled ? 'rgba(8, 8, 16, 0.90)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(20px) saturate(160%)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(160%)' : 'none',
-          borderBottom: `1px solid ${scrolled ? 'var(--color-border)' : 'transparent'}`,
-          transform: hidden ? 'translateY(-100%)' : 'translateY(0)',
+          transition: 'background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease',
+          backgroundColor: scrolled ? 'rgba(6, 6, 14, 0.52)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(32px) saturate(180%) brightness(0.95)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(32px) saturate(180%) brightness(0.95)' : 'none',
+          borderBottom: `1px solid ${scrolled ? 'rgba(255,255,255,0.07)' : 'transparent'}`,
+          boxShadow: scrolled ? '0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.28)' : 'none',
         }}
       >
         <div
@@ -263,15 +253,17 @@ export function Nav() {
 
           {/* Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            {/* GitHub CTA — desktop */}
+            {/* Book a Call CTA — desktop */}
             <a
               ref={githubRef}
-              href="https://github.com/oraclous-ai"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#"
+              onClick={(e) => {
+                e.preventDefault()
+                ;(window as any).Calendly?.initPopupWidget({ url: 'https://calendly.com/reza-oraclous/consultancy-with-reza-oraclous' })
+              }}
               className="hidden md:inline-flex"
               style={{
-                display: 'none', /* overridden by Tailwind md:inline-flex */
+                display: 'none',
                 alignItems: 'center',
                 gap: '0.4rem',
                 padding: '0.45rem 1.1rem',
@@ -281,25 +273,15 @@ export function Nav() {
                 textTransform: 'uppercase',
                 color: 'var(--color-text-primary)',
                 textDecoration: 'none',
-                border: '1px solid var(--color-border-accent)',
+                background: 'var(--gradient-accent)',
                 borderRadius: 'var(--radius-full)',
-                transition: 'border-color 0.25s, box-shadow 0.25s, background-color 0.25s',
+                boxShadow: 'var(--glow-accent-sm)',
+                transition: 'opacity 0.2s, box-shadow 0.2s',
               }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget
-                el.style.borderColor     = 'var(--color-accent)'
-                el.style.boxShadow       = 'var(--glow-accent-sm)'
-                el.style.backgroundColor = 'var(--color-accent-dim)'
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget
-                el.style.borderColor     = 'var(--color-border-accent)'
-                el.style.boxShadow       = 'none'
-                el.style.backgroundColor = 'transparent'
-              }}
+              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = 'var(--glow-accent-md)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'var(--glow-accent-sm)' }}
             >
-              <GitHubIcon />
-              Star on GitHub
+              Book a Call
             </a>
 
             {/* Hamburger — mobile */}
@@ -385,10 +367,12 @@ export function Nav() {
           }}
         >
           <a
-            href="https://github.com/oraclous-ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={closeMenu}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault()
+              closeMenu()
+              ;(window as any).Calendly?.initPopupWidget({ url: 'https://calendly.com/reza-oraclous/consultancy-with-reza-oraclous' })
+            }}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -401,8 +385,7 @@ export function Nav() {
               textDecoration: 'none',
             }}
           >
-            <GitHubIcon />
-            Star on GitHub →
+            Book a Free AI Strategy Call →
           </a>
           <p
             style={{
