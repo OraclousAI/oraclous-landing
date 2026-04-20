@@ -381,6 +381,32 @@ export function Nav() {
           padding: '6rem var(--section-padding-x) 3rem',
         }}
       >
+        {/* Close button */}
+        <button
+          type="button"
+          onClick={closeMenu}
+          aria-label="Close menu"
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: 'var(--section-padding-x)',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '0.75rem',
+            minWidth: '44px',
+            minHeight: '44px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'var(--color-text-primary)',
+          }}
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4 4 L16 16 M16 4 L4 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </button>
+
         {/* Mobile nav links */}
         <nav
           aria-label="Mobile site sections"
