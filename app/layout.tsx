@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Syne, DM_Sans, JetBrains_Mono } from 'next/font/google'
+import Script from 'next/script'
 import { Providers } from '@/providers'
 import { Cursor } from '@/components/layout/Cursor'
 import { Loader } from '@/components/layout/Loader'
@@ -60,6 +61,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+      </head>
       <body>
         <Providers>
           <Loader />
@@ -67,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Nav />
           {children}
           <Footer />
+          <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
         </Providers>
       </body>
     </html>
