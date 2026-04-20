@@ -1,11 +1,12 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { gsap } from '@/lib/gsap'
 import { EASE, DUR } from '@/lib/gsap'
 import { useUIStore } from '@/stores/ui.store'
 import { prefersReducedMotion } from '@/lib/motion'
 import { useMagnetic } from '@/hooks/useMagnetic'
+import { RoleSelector, HERO_SUBS, type Role } from '@/components/layout/RoleSelector'
 
 const STAT_ITEMS = [
   { value: '18', label: 'Specialist Agents' },
@@ -36,6 +37,24 @@ export function HeroSection() {
   const isLoaderComplete = useUIStore((s) => s.isLoaderComplete)
   const primaryRef = useMagnetic<HTMLAnchorElement>(0.4)
   const ghostRef   = useMagnetic<HTMLAnchorElement>(0.25)
+  const [role, setRole] = useState<Role | null>(null)
+  const subRef = useRef<HTMLParagraphElement>(null)
+
+  /* Pick up role stored from a previous session */
+  useEffect(() => {
+    const stored = sessionStorage.getItem('oraclous-role') as Role | null
+    if (stored) setRole(stored)
+    const handler = (e: Event) => setRole((e as CustomEvent<Role>).detail)
+    window.addEventListener('oraclous:role', handler)
+    return () => window.removeEventListener('oraclous:role', handler)
+  }, [])
+
+  /* Fade sub-paragraph when role changes */
+  useEffect(() => {
+    const el = subRef.current
+    if (!el) return
+    gsap.fromTo(el, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' })
+  }, [role])
 
   /* Multi-layer mouse parallax: orbs + grid + content 3D tilt + ring counter-rotation */
   useEffect(() => {
@@ -123,6 +142,20 @@ export function HeroSection() {
         .fromTo('[data-hero-stat]',    { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: EASE.entrance, stagger: 0.08 }, '-=0.2')
         .fromTo(ringRef.current,       { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 1.2, ease: EASE.entrance }, '-=0.5')
       gsap.set(el, { opacity: 1 })
+
+      /* One-time attention pulse on role buttons if no role chosen yet */
+      if (!sessionStorage.getItem('oraclous-role')) {
+        const btns = el.querySelectorAll('[data-role-btn]')
+        gsap.fromTo(btns,
+          { scale: 1, boxShadow: 'none' },
+          {
+            scale: 1.08,
+            boxShadow: '0 0 10px rgba(67,97,238,0.5)',
+            duration: 0.3, ease: 'power2.out',
+            yoyo: true, repeat: 3, stagger: 0.1, delay: 1.2,
+          }
+        )
+      }
     }, contentRef)
     return () => ctx.revert()
   }, [isLoaderComplete])
@@ -223,6 +256,11 @@ export function HeroSection() {
             willChange: 'transform',
           }}
         >
+          {/* Role selector */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            <RoleSelector onRoleChange={setRole} />
+          </div>
+
           {/* Eyebrow */}
           <div data-hero-eyebrow="" style={{ marginBottom: '2rem' }}>
             <span style={{
@@ -265,13 +303,14 @@ export function HeroSection() {
           </h1>
 
           {/* Sub */}
-          <p data-hero-sub="" style={{
+          <p ref={subRef} data-hero-sub="" style={{
             fontSize: 'var(--text-base)', lineHeight: 'var(--leading-relaxed)',
             color: 'var(--color-text-secondary)',
             maxWidth: '440px', marginBottom: '2.5rem',
           }}>
-            18 specialist agents. One knowledge graph. Complete automation of the
-            fine-tuning lifecycle — on your infrastructure, with full data ownership.
+            {role
+              ? HERO_SUBS[role]
+              : 'Your team is spending engineering cycles on dataset curation, training reruns, and deployment scripts instead of improving the model. Oraclous replaces that with 18 specialist agents and a self-improving loop — fully automated, fully on your infra.'}
           </p>
 
           {/* CTAs */}

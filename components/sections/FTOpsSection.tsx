@@ -286,7 +286,7 @@ export function FTOpsSection() {
               fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
               letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase',
               color: 'var(--color-text-tertiary)', marginBottom: 'var(--space-4)',
-            }}>A new discipline</p>
+            }}>The discipline that was missing</p>
           </FadeUp>
           <WordReveal
             as="h2"
@@ -311,6 +311,23 @@ export function FTOpsSection() {
           </FadeUp>
         </div>
 
+        {/* Orientation note */}
+        <FadeUp delay={0.3}>
+          <p style={{
+            fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-relaxed)',
+            color: 'var(--color-accent)',
+            fontFamily: 'var(--font-mono)', letterSpacing: '0.01em',
+            marginBottom: 'var(--space-5)',
+            padding: 'var(--space-4) var(--space-6)',
+            background: 'var(--color-accent-dim)',
+            border: '1px solid var(--color-border-accent)',
+            borderRadius: 'var(--radius-md)',
+          }}>
+            If you&apos;ve shipped MLOps: this is the same framework applied to weights instead of containers.
+            If you haven&apos;t: the three-word version is &ldquo;DevOps for models.&rdquo; Click each row to expand.
+          </p>
+        </FadeUp>
+
         {/* Breakdown rows */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           {WHAT_IT_MEANS.map((item, i) => (
@@ -323,15 +340,6 @@ export function FTOpsSection() {
             />
           ))}
         </div>
-
-        <p style={{
-          marginTop: 'var(--space-4)',
-          fontFamily: 'var(--font-mono)', fontSize: '11px',
-          color: 'var(--color-text-muted)', textAlign: 'center',
-          letterSpacing: 'var(--tracking-wide)',
-        }}>
-          Click any row to expand
-        </p>
 
       </div>
     </section>

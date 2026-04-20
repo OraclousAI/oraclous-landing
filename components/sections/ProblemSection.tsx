@@ -11,6 +11,7 @@ import { LineReveal } from '@/components/animation/LineReveal'
 const PAINS = [
   {
     num: '01',
+    hook: 'Be honest: when did you last run a fine-tuning cycle in under a week?',
     title: 'Fine-tuning is still a manual process',
     body: 'Engineers spend weeks on dataset curation, training runs, and evaluation. Every cycle is a one-off script. Nothing is systematic. Nothing compounds.',
     accent: '#EF4444',
@@ -19,6 +20,7 @@ const PAINS = [
   },
   {
     num: '02',
+    hook: 'How much of your org\'s actual knowledge is in your model right now?',
     title: 'Your knowledge is locked in silos',
     body: 'Docs, databases, code, and institutional knowledge live in disconnected places. Fine-tuning on a fraction of your knowledge produces a fraction of the capability.',
     accent: '#EAB308',
@@ -27,6 +29,7 @@ const PAINS = [
   },
   {
     num: '03',
+    hook: 'What\'s your exit strategy if the fine-tuning SaaS doubles its price?',
     title: 'Vendor SaaS means permanent dependency',
     body: 'Cloud fine-tuning services require data egress, force proprietary formats, and capture your model weights. You pay to build someone else\'s competitive advantage.',
     accent: '#F97316',
@@ -41,7 +44,7 @@ const PAINS = [
   1 — Siloed knowledge : three nodes flash broken connection lines
   2 — Vendor lock      : padlock shackle snaps closed on hover
 */
-function PainCard({ pain, index }: { pain: typeof PAINS[number]; index: number }) {
+function PainCard({ pain, index }: { pain: typeof PAINS[number] & { hook: string }; index: number }) {
   const cardRef    = useRef<HTMLDivElement>(null)
   const spotRef    = useRef<HTMLDivElement>(null)
   const ghostRef   = useRef<HTMLSpanElement>(null)
@@ -50,7 +53,7 @@ function PainCard({ pain, index }: { pain: typeof PAINS[number]; index: number }
   const line2Ref   = useRef<SVGLineElement>(null)
   const shackleRef = useRef<SVGPathElement>(null)
 
-  const { num, title, body, accent, accentDim, accentBorder } = pain
+  const { num, hook, title, body, accent, accentDim, accentBorder } = pain
 
   useEffect(() => {
     const card = cardRef.current
@@ -214,6 +217,13 @@ function PainCard({ pain, index }: { pain: typeof PAINS[number]; index: number }
         color: accent, marginBottom: 'var(--space-4)',
       }}>{num}</p>
 
+      <p style={{
+        fontSize: 'var(--text-xs)', lineHeight: 'var(--leading-relaxed)',
+        color: accent, fontStyle: 'italic',
+        marginBottom: 'var(--space-3)',
+        opacity: 0.85,
+      }}>{hook}</p>
+
       <h3 style={{
         fontFamily: 'var(--font-display)', fontWeight: 700,
         fontSize: 'var(--text-xl)', color: 'var(--color-text-primary)',
@@ -265,7 +275,7 @@ export function ProblemSection() {
               fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
               letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase',
               color: 'var(--color-text-tertiary)', marginBottom: 'var(--space-4)',
-            }}>The problem</p>
+            }}>Does this sound familiar?</p>
           </FadeUp>
           <WordReveal
             as="h2"
@@ -275,8 +285,17 @@ export function ProblemSection() {
               letterSpacing: 'var(--tracking-tight)', color: 'var(--color-text-primary)',
             }}
           >
-            Fine-tuning is broken by design.
+            Fine-tuning breaks every team that touches it.
           </WordReveal>
+          <FadeUp delay={0.15}>
+            <p style={{
+              fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)',
+              fontFamily: 'var(--font-mono)', letterSpacing: 'var(--tracking-wide)',
+              marginTop: 'var(--space-4)',
+            }}>
+              Pick the one that costs your team the most:
+            </p>
+          </FadeUp>
         </div>
 
         {/* Pain cards */}

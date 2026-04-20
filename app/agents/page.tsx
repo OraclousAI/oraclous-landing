@@ -8,6 +8,7 @@ import { prefersReducedMotion } from '@/lib/motion'
 import { agents } from '@/content/agents'
 import { FadeUp } from '@/components/animation/FadeUp'
 import { WordReveal } from '@/components/animation/WordReveal'
+import { openCalendly } from '@/lib/calendly'
 
 const STAGE_PALETTE: Record<string, { color: string; bg: string; border: string; glow: string }> = {
   'Connect':  { color: '#4361EE', bg: 'rgba(67,97,238,0.08)',   border: 'rgba(67,97,238,0.28)',  glow: 'rgba(67,97,238,0.22)' },
@@ -317,8 +318,18 @@ export default function AgentsPage() {
             fontSize: 'var(--text-lg)', lineHeight: 'var(--leading-relaxed)',
             color: 'var(--color-text-tertiary)',
           }}>
-            Each agent owns a specific stage of the fine-tuning lifecycle — from ingesting your data
-            to monitoring the deployed model for drift. No handoffs. No humans required.
+            Each agent owns exactly one stage of the fine-tuning lifecycle — not as a general-purpose
+            assistant, but as a specialist that does one thing precisely, hands off, and steps aside.
+            No handoffs dropped. No humans required.
+          </p>
+        </FadeUp>
+        <FadeUp delay={0.35}>
+          <p style={{
+            marginTop: 'var(--space-6)',
+            fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+            color: 'var(--color-text-muted)', letterSpacing: 'var(--tracking-wide)',
+          }}>
+            Start with the stage where your current process breaks most often:
           </p>
         </FadeUp>
       </div>
@@ -389,6 +400,55 @@ export default function AgentsPage() {
               <AgentCard agent={agent} onSelect={setSelected} />
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ── Page footer CTA ───────────────────────────────────────── */}
+      <div style={{
+        borderTop: '1px solid var(--color-border)',
+        padding: 'var(--space-16) var(--section-padding-x)',
+      }}>
+        <div style={{
+          maxWidth: 'var(--max-w-content)', margin: '0 auto',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          flexWrap: 'wrap', gap: 'var(--space-6)',
+        }}>
+          <Link href="/#loop" style={{
+            fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+            letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
+            color: 'var(--color-text-muted)', textDecoration: 'none',
+            transition: 'color 0.2s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-text-secondary)' }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-text-muted)' }}
+          >
+            ← See the 10-Stage Loop
+          </Link>
+          <a
+            href="#"
+            onClick={(e) => { e.preventDefault(); openCalendly() }}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+              padding: '0.65rem 1.4rem', background: 'var(--gradient-accent)',
+              borderRadius: 'var(--radius-full)', fontFamily: 'var(--font-mono)',
+              fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)',
+              textTransform: 'uppercase', color: '#fff', textDecoration: 'none',
+              boxShadow: 'var(--glow-accent-sm)',
+            }}
+          >
+            Book a Strategy Call →
+          </a>
+          <Link href="/architecture" style={{
+            fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+            letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
+            color: 'var(--color-text-muted)', textDecoration: 'none',
+            transition: 'color 0.2s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-text-secondary)' }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-text-muted)' }}
+          >
+            Explore the Architecture →
+          </Link>
         </div>
       </div>
 

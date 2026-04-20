@@ -7,6 +7,7 @@ import { EASE } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/motion'
 import { FadeUp } from '@/components/animation/FadeUp'
 import { WordReveal } from '@/components/animation/WordReveal'
+import { openCalendly } from '@/lib/calendly'
 
 const LAYERS = [
   {
@@ -494,6 +495,55 @@ export default function ArchitecturePage() {
           </div>
         </div>
 
+      </div>
+
+      {/* ── Page footer CTA ───────────────────────────────────────── */}
+      <div style={{
+        borderTop: '1px solid var(--color-border)',
+        padding: 'var(--space-16) var(--section-padding-x)',
+      }}>
+        <div style={{
+          maxWidth: 'var(--max-w-content)', margin: '0 auto',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          flexWrap: 'wrap', gap: 'var(--space-6)',
+        }}>
+          <Link href="/agents" style={{
+            fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+            letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
+            color: 'var(--color-text-muted)', textDecoration: 'none',
+            transition: 'color 0.2s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-text-secondary)' }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-text-muted)' }}
+          >
+            ← See the 18 Agents
+          </Link>
+          <a
+            href="#"
+            onClick={(e) => { e.preventDefault(); openCalendly() }}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+              padding: '0.65rem 1.4rem', background: 'var(--gradient-accent)',
+              borderRadius: 'var(--radius-full)', fontFamily: 'var(--font-mono)',
+              fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)',
+              textTransform: 'uppercase', color: '#fff', textDecoration: 'none',
+              boxShadow: 'var(--glow-accent-sm)',
+            }}
+          >
+            Book a Strategy Call →
+          </a>
+          <Link href="/roadmap" style={{
+            fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+            letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
+            color: 'var(--color-text-muted)', textDecoration: 'none',
+            transition: 'color 0.2s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-text-secondary)' }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-text-muted)' }}
+          >
+            View the Roadmap →
+          </Link>
+        </div>
       </div>
     </div>
   )

@@ -105,7 +105,7 @@ export function CtaSection() {
               letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase',
               color: 'var(--color-text-tertiary)', marginBottom: 'var(--space-6)',
             }}>
-              Ready to start
+              If you&apos;ve read this far, here&apos;s the honest proposition
             </p>
           </FadeUp>
 
@@ -174,8 +174,16 @@ export function CtaSection() {
                 fontSize: 'var(--text-sm)', color: 'var(--color-text-tertiary)',
                 lineHeight: 'var(--leading-relaxed)',
               }}>
-                30 minutes with our team. We'll map out exactly how Oraclous fits your
-                stack and what fine-tuning gains you can expect in the first 90 days.
+                No pitch deck. No sales engineering. One honest conversation.
+              </p>
+              <p style={{
+                fontSize: 'var(--text-sm)', color: 'var(--color-text-tertiary)',
+                lineHeight: 'var(--leading-relaxed)',
+                marginTop: 'var(--space-3)',
+              }}>
+                We look at your actual stack, your actual data sources, and your actual model
+                goals — then tell you whether Oraclous is the right fit. If it&apos;s not,
+                we&apos;ll say so. If it is, we show you exactly what the first 30 days look like.
               </p>
             </div>
 

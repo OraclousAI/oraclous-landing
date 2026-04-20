@@ -8,7 +8,7 @@ const withBundleAnalyzer = createBundleAnalyzer({
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' https://assets.calendly.com",
-  "style-src 'self' 'unsafe-inline' https://assets.calendly.com",
+  "style-src 'self' 'unsafe-inline' https://assets.calendly.com https://fonts.googleapis.com",
   "img-src 'self' data: https: blob:",
   "font-src 'self' https://fonts.gstatic.com",
   "connect-src 'self' https://calendly.com https://api.calendly.com",

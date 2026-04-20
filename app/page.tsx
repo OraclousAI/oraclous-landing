@@ -5,6 +5,27 @@ import { useActiveSectionObserver } from '@/hooks/useActiveSectionObserver'
 import { HeroSection }    from '@/components/sections/HeroSection'
 import { MetricsSection } from '@/components/sections/MetricsSection'
 
+function SectionBridge({ text }: { text: string }) {
+  return (
+    <div style={{
+      maxWidth: 'var(--max-w-content)',
+      margin: '0 auto',
+      padding: '0 var(--section-padding-x)',
+    }}>
+      <p style={{
+        fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+        color: 'var(--color-text-muted)', letterSpacing: 'var(--tracking-wide)',
+        borderTop: '1px solid var(--color-border)',
+        borderBottom: '1px solid var(--color-border)',
+        padding: '1.25rem 0', textAlign: 'center',
+        lineHeight: 'var(--leading-relaxed)',
+      }}>
+        {text}
+      </p>
+    </div>
+  )
+}
+
 /* ─── Below-fold sections — code-split for faster initial load ─────── */
 
 const ProblemSection = dynamic(() =>
@@ -44,10 +65,12 @@ const CtaSection = dynamic(() =>
 /* ─── Observed section IDs for nav scroll-spy ─────────────────────── */
 
 const OBSERVED_SECTIONS = [
+  'problem',
+  'ftops',
   'architecture',
   'loop',
   'agents',
-  'roadmap',
+  'cta',
 ] as const
 
 export default function HomePage() {
@@ -57,13 +80,20 @@ export default function HomePage() {
     <main style={{ backgroundColor: 'var(--color-bg-void)' }}>
       <HeroSection />
       <MetricsSection />
+      <SectionBridge text="Before the product: the problem it exists to solve." />
       <ProblemSection />
+      <SectionBridge text="There's a common root cause behind all three: fine-tuning has never had its own operational framework. That's what we built." />
       <FTOpsSection />
+      <SectionBridge text="FTOps needs infrastructure. Here's the three-layer architecture that makes it run." />
       <ArchitectureSection />
+      <SectionBridge text="Layer 3 — the FTOps team — runs on a specific 10-stage loop. Here's exactly how it works." />
       <LoopSection />
+      <SectionBridge text="Stage 3 runs 8 analysis agents in parallel. Here's who they are and what they're looking for." />
       <AnalysisSection />
       <AgentsSection />
+      <SectionBridge text="The agents work over a knowledge graph. Here's why that matters more than you might expect." />
       <WhyKGSection />
+      <SectionBridge text="The graph is the foundation. What you build on it is governed by four non-negotiables." />
       <PrinciplesSection />
       <ProductsSection />
       <RoadmapSection />

@@ -184,15 +184,24 @@ export function WhyKGSection() {
               fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
               letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase',
               color: 'var(--color-text-tertiary)', marginBottom: 'var(--space-4)',
-            }}>Why a knowledge graph</p>
+            }}>Why not just use vectors?</p>
           </FadeUp>
           <WordReveal as="h2" style={{
             fontFamily: 'var(--font-display)', fontWeight: 700,
             fontSize: 'var(--text-3xl)', lineHeight: 'var(--leading-tight)',
             letterSpacing: 'var(--tracking-tight)', color: 'var(--color-text-primary)',
           }}>
-            Structure unlocks what vectors can't see.
+            Why doesn&apos;t everyone just use vector search?
           </WordReveal>
+          <FadeUp delay={0.1}>
+            <p style={{
+              fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)',
+              fontFamily: 'var(--font-mono)', letterSpacing: 'var(--tracking-wide)',
+              marginTop: 'var(--space-4)',
+            }}>
+              It&apos;s the right question. Here&apos;s the honest answer:
+            </p>
+          </FadeUp>
         </div>
 
         {/* Main: points + animated graph */}
