@@ -47,13 +47,13 @@ export function RoleSelector({ onRoleChange }: Props) {
         style={{
           fontFamily: 'var(--font-mono)',
           fontSize: '10px',
-          color: 'var(--color-text-muted)',
+          color: 'var(--color-text-secondary)',
           textTransform: 'uppercase',
           letterSpacing: 'var(--tracking-widest)',
           flexShrink: 0,
         }}
       >
-        I&apos;m a
+        Personalize for:
       </span>
       {ROLES.map(role => (
         <button

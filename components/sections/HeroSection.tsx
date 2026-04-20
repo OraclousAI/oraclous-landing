@@ -298,7 +298,7 @@ export function HeroSection() {
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>
-              that runs itself.
+              your model never had.
             </span>
           </h1>
 

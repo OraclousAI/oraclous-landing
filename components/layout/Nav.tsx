@@ -313,7 +313,6 @@ export function Nav() {
               onClick={(e) => { e.preventDefault(); openCalendly() }}
               className="hidden md:inline-flex"
               style={{
-                display: 'none',
                 alignItems: 'center',
                 gap: '0.4rem',
                 padding: '0.45rem 1.1rem',
