@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: 'Agent Team',
   description:
     'Meet the 18 specialist agents that run your fine-tuning pipeline — from data ingestion and knowledge graph construction to training, evaluation, and continuous deployment.',
+  alternates: { canonical: '/agents' },
   openGraph: {
     title: 'Agent Team | Oraclous',
     description:

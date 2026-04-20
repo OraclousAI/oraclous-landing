@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: 'Architecture',
   description:
     'The three-layer architecture powering Oraclous: a Knowledge Graph foundation, autonomous agent framework, and continuous FTOps pipeline — all self-hosted on your infrastructure.',
+  alternates: { canonical: '/architecture' },
   openGraph: {
     title: 'Architecture | Oraclous',
     description:

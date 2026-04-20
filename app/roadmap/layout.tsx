@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: 'Roadmap',
   description:
     'Track what the Oraclous team has shipped, what is actively being built, and the forward commitments across all three platform layers.',
+  alternates: { canonical: '/roadmap' },
   openGraph: {
     title: 'Roadmap | Oraclous',
     description:
