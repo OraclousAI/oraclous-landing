@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useEffect, useState } from 'react'
+import { useIsTablet } from '@/hooks/useMediaQuery'
 import { gsap } from '@/lib/gsap'
 import { EASE } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/motion'
@@ -267,13 +268,14 @@ function MiniVis({ index, accent, isActive }: { index: number; accent: string; i
   )
 }
 
-function MetricCard({ m, i, num, suffix, isActive, onActivate }: {
+function MetricCard({ m, i, num, suffix, isActive, onActivate, compact }: {
   m: typeof metrics[number]
   i: number
   num: number
   suffix: string
   isActive: boolean
   onActivate: () => void
+  compact?: boolean
 }) {
   const cardRef    = useRef<HTMLDivElement>(null)
   const spotRef    = useRef<HTMLDivElement>(null)
@@ -345,13 +347,15 @@ function MetricCard({ m, i, num, suffix, isActive, onActivate }: {
       onMouseEnter={onActivate}
       onMouseLeave={onMouseLeave}
       style={{
-        padding: 'var(--space-8) var(--space-6)',
-        borderLeft: i > 0 ? '1px solid var(--color-border)' : undefined,
+        padding: compact ? 'var(--space-6) var(--space-4)' : 'var(--space-8) var(--space-6)',
+        border: compact ? '1px solid var(--color-border)' : undefined,
+        borderLeft: !compact && i > 0 ? '1px solid var(--color-border)' : undefined,
         textAlign: 'center',
         position: 'relative',
         cursor: 'default',
         willChange: 'transform',
         overflow: 'hidden',
+        borderRadius: compact ? 'var(--radius-md)' : undefined,
       }}
     >
       {/* Spotlight */}
@@ -423,6 +427,7 @@ export function MetricsSection() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
   const isUserHovering = useRef(false)
   const cycleIdxRef    = useRef(0)
+  const isTablet = useIsTablet()
 
   /* Scroll entrance */
   useEffect(() => {
@@ -476,8 +481,10 @@ export function MetricsSection() {
           position: 'relative', zIndex: 1,
           maxWidth: 'var(--max-w-content)', margin: '0 auto',
           display: 'grid',
-          gridTemplateColumns: `repeat(${metrics.length}, 1fr)`,
-          gap: 0,
+          gridTemplateColumns: isTablet
+            ? 'repeat(2, 1fr)'
+            : `repeat(${metrics.length}, 1fr)`,
+          gap: isTablet ? '1px' : 0,
         }}
         onMouseLeave={() => {
           isUserHovering.current = false
@@ -490,6 +497,7 @@ export function MetricsSection() {
             <MetricCard
               key={m.label} m={m} i={i} num={num} suffix={suffix}
               isActive={hoveredIdx === i}
+              compact={isTablet}
               onActivate={() => {
                 isUserHovering.current = true
                 setHoveredIdx(i)

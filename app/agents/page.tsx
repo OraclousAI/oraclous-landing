@@ -345,8 +345,10 @@ export default function AgentsPage() {
             background: 'var(--color-bg-surface)',
             border: '1px solid var(--color-border)',
             borderRadius: 'var(--radius-lg)',
-            padding: '4px', overflow: 'auto',
-          }}>
+            padding: '4px',
+            overflowX: 'auto',
+            scrollbarWidth: 'none',
+          } as React.CSSProperties}>
             {ALL_STAGES.map((stage) => {
               const palette = stage === 'All' ? null : STAGE_PALETTE[stage]
               const isActive = activeStage === stage
@@ -392,7 +394,7 @@ export default function AgentsPage() {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))',
           gap: 'var(--space-4)',
         }}>
           {filtered.map((agent) => (

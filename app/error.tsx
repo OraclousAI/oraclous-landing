@@ -94,12 +94,13 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         </p>
 
         {/* Actions */}
-        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button
             type="button"
             onClick={reset}
             style={{
               padding: '0.6rem 1.4rem',
+              whiteSpace: 'nowrap',
               fontFamily: 'var(--font-mono)',
               fontSize: 'var(--text-xs)',
               letterSpacing: 'var(--tracking-wide)',
@@ -122,6 +123,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
             href="/"
             style={{
               padding: '0.6rem 1.4rem',
+              whiteSpace: 'nowrap',
               fontFamily: 'var(--font-mono)',
               fontSize: 'var(--text-xs)',
               letterSpacing: 'var(--tracking-wide)',

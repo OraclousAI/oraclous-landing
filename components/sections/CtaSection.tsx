@@ -7,6 +7,7 @@ import { FadeUp } from '@/components/animation/FadeUp'
 import { WordReveal } from '@/components/animation/WordReveal'
 import { useMagnetic } from '@/hooks/useMagnetic'
 import { openCalendly } from '@/lib/calendly'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 
 function burstParticles(x: number, y: number) {
   if (prefersReducedMotion()) return
@@ -36,6 +37,7 @@ export function CtaSection() {
   const dotGridRef = useRef<HTMLDivElement>(null)
   const callRef    = useMagnetic<HTMLAnchorElement>(0.4)
   const githubRef  = useMagnetic<HTMLAnchorElement>(0.2)
+  const isMobile   = useIsMobile()
 
   /* Ambient pulsing glows */
   useEffect(() => {
@@ -93,8 +95,10 @@ export function CtaSection() {
       <div style={{
         position: 'relative', zIndex: 1,
         maxWidth: 'var(--max-w-content)', margin: '0 auto',
-        display: 'grid', gridTemplateColumns: '1fr 1fr',
-        gap: 'var(--space-16)', alignItems: 'center',
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+        gap: isMobile ? 'var(--space-10)' : 'var(--space-16)',
+        alignItems: 'center',
       }}>
 
         {/* LEFT: headline */}

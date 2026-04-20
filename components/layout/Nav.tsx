@@ -10,6 +10,7 @@ import { useMagnetic } from '@/hooks/useMagnetic'
 import { useCursorState } from '@/hooks/useCursorState'
 import { useTextScramble } from '@/hooks/useTextScramble'
 import { openCalendly } from '@/lib/calendly'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 
 /* ─── Static data ────────────────────────────────────────────────────── */
 
@@ -103,6 +104,7 @@ export function Nav() {
 
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
+  const isMobile = useIsMobile()
 
   const pathname          = usePathname()
   const isHomepage        = pathname === '/'
@@ -268,8 +270,7 @@ export function Nav() {
           {/* Desktop links */}
           <nav
             aria-label="Site sections"
-            style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}
-            className="hidden md:flex"
+            style={{ display: isMobile ? 'none' : 'flex', alignItems: 'center', gap: '2.5rem' }}
           >
             {NAV_LINKS.map(({ href, label, sectionId, route }) => {
               const isActive = route
@@ -311,8 +312,8 @@ export function Nav() {
               ref={githubRef}
               href="#"
               onClick={(e) => { e.preventDefault(); openCalendly() }}
-              className="hidden md:inline-flex"
               style={{
+                display: isMobile ? 'none' : 'inline-flex',
                 alignItems: 'center',
                 gap: '0.4rem',
                 padding: '0.45rem 1.1rem',
@@ -339,15 +340,14 @@ export function Nav() {
               onClick={() => setMenuOpen((v) => !v)}
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={menuOpen}
-              className="flex md:hidden"
               style={{
+                display: isMobile ? 'flex' : 'none',
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
                 padding: '0.75rem',
                 minWidth: '44px',
                 minHeight: '44px',
-                display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 zIndex: 'calc(var(--z-drawer) + 1)',
@@ -366,7 +366,7 @@ export function Nav() {
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"
-        aria-hidden={!menuOpen}
+        inert={!menuOpen || undefined}
         style={{
           position: 'fixed',
           inset: 0,

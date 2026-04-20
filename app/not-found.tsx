@@ -138,7 +138,7 @@ export default function NotFound() {
         {/* CTA */}
         <div
           data-animate=""
-          style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', opacity: 0 }}
+          style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap', opacity: 0 }}
         >
           <Link
             href="/"
@@ -147,6 +147,7 @@ export default function NotFound() {
               alignItems: 'center',
               gap: '0.4rem',
               padding: '0.6rem 1.4rem',
+              whiteSpace: 'nowrap',
               fontFamily: 'var(--font-mono)',
               fontSize: 'var(--text-xs)',
               letterSpacing: 'var(--tracking-wide)',
@@ -170,6 +171,7 @@ export default function NotFound() {
               display: 'inline-flex',
               alignItems: 'center',
               padding: '0.6rem 1.4rem',
+              whiteSpace: 'nowrap',
               fontFamily: 'var(--font-mono)',
               fontSize: 'var(--text-xs)',
               letterSpacing: 'var(--tracking-wide)',

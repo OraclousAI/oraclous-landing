@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useEffect, useState, useCallback } from 'react'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 import { gsap } from '@/lib/gsap'
 import { EASE } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/motion'
@@ -37,6 +38,7 @@ export function LoopSection() {
   const isHovering         = useRef(false)
   const [activeIdx, setActiveIdx] = useState(0)
   const prevIdx      = useRef(0)
+  const isMobile = useIsMobile()
 
   /* Animate content panel on stage change */
   useEffect(() => {
@@ -146,7 +148,8 @@ export function LoopSection() {
       style={{
         backgroundColor: 'var(--color-bg-base)',
         padding: 'var(--space-10) var(--section-padding-x)',
-        height: '100svh',
+        height: isMobile ? 'auto' : '100svh',
+        minHeight: isMobile ? 'auto' : undefined,
         boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
@@ -182,15 +185,18 @@ export function LoopSection() {
           </FadeUp>
         </div>
 
-        {/* Main: diagram + detail panel */}
+        {/* Main: diagram + detail panel — stacked on mobile */}
         <div style={{
-          display: 'grid', gridTemplateColumns: '1fr 420px',
-          gap: 'var(--space-12)', alignItems: 'center',
-          flex: 1, minHeight: 0,
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 420px',
+          gap: isMobile ? 'var(--space-8)' : 'var(--space-12)',
+          alignItems: 'center',
+          flex: isMobile ? undefined : 1,
+          minHeight: 0,
         }}>
 
-          {/* Left: Active stage detail */}
-          <div ref={panelRef} style={{ opacity: 1 }}>
+          {/* Stage detail panel — order 2 on mobile (diagram first) */}
+          <div ref={panelRef} style={{ opacity: 1, order: isMobile ? 2 : undefined }}>
             {/* Stage badge */}
             <div style={{ marginBottom: 'var(--space-6)' }}>
               <span style={{
@@ -210,7 +216,7 @@ export function LoopSection() {
             {/* Stage number big */}
             <div style={{
               fontFamily: 'var(--font-mono)', fontWeight: 800,
-              fontSize: 'clamp(4rem,8vw,7rem)', lineHeight: 1,
+              fontSize: isMobile ? 'clamp(3rem,12vw,4.5rem)' : 'clamp(4rem,8vw,7rem)', lineHeight: 1,
               color, opacity: 0.15, letterSpacing: '-0.04em',
               marginBottom: '-1.5rem', userSelect: 'none',
             }} aria-hidden="true">
@@ -256,11 +262,11 @@ export function LoopSection() {
             </div>
           </div>
 
-          {/* Right: Circular SVG diagram */}
+          {/* Circular SVG diagram — order 1 on mobile (appears first) */}
           <div
             ref={diagramRef}
             onMouseLeave={() => { isHovering.current = false; setActiveIdx(scrollIdxRef.current) }}
-            style={{ width: '100%', maxWidth: '420px', margin: '0 auto' }}
+            style={{ width: '100%', maxWidth: isMobile ? '320px' : '420px', margin: '0 auto', order: isMobile ? 1 : undefined }}
           >
             <svg viewBox="0 0 400 400" width="100%" style={{ display: 'block', overflow: 'visible' }}>
               {/* Outer track ring */}

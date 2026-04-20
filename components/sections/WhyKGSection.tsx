@@ -6,6 +6,7 @@ import { EASE } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/motion'
 import { FadeUp } from '@/components/animation/FadeUp'
 import { WordReveal } from '@/components/animation/WordReveal'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 
 const NODES = [
   { id: 'h0', x: 160, y: 120, r: 12, cluster: 0, label: 'Entity A' },
@@ -66,6 +67,7 @@ export function WhyKGSection() {
   const svgRef         = useRef<SVGSVGElement>(null)
   const [activeCluster, setActiveCluster] = useState<number | null>(null)
   const [clickedNodeId, setClickedNodeId] = useState<string | null>(null)
+  const isMobile = useIsMobile()
 
   /* Draw-in animation on scroll */
   useEffect(() => {
@@ -206,8 +208,10 @@ export function WhyKGSection() {
 
         {/* Main: points + animated graph */}
         <div style={{
-          display: 'grid', gridTemplateColumns: '1fr 420px',
-          gap: 'var(--space-16)', alignItems: 'center',
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 420px',
+          gap: isMobile ? 'var(--space-10)' : 'var(--space-16)',
+          alignItems: 'center',
         }}>
 
           {/* Left: interactive points */}
@@ -276,7 +280,7 @@ export function WhyKGSection() {
           </div>
 
           {/* Right: SVG knowledge graph */}
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', maxWidth: isMobile ? '360px' : 'none', margin: isMobile ? '0 auto' : undefined }}>
             <svg
               ref={svgRef}
               viewBox="0 0 440 440"

@@ -9,6 +9,7 @@ import type { RoadmapStatus } from '@/types'
 import { FadeUp } from '@/components/animation/FadeUp'
 import { WordReveal } from '@/components/animation/WordReveal'
 import { CountUp } from '@/components/animation/CountUp'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 
 const STATUS_CONFIG: Record<RoadmapStatus, {
   label: string; color: string; bg: string; border: string; dot: string
@@ -48,6 +49,7 @@ export function RoadmapSection() {
   const itemsRef     = useRef<HTMLDivElement>(null)
   const [activeFilter, setActiveFilter] = useState<Filter>('all')
   const [openIdx, setOpenIdx] = useState<number | null>(null)
+  const isMobile = useIsMobile()
 
   /* Scroll entrance + scrubbed line + checkmark draw-in */
   useEffect(() => {
@@ -254,25 +256,38 @@ export function RoadmapSection() {
         </div>
 
         {/* Vertical timeline */}
-        <div style={{ display: 'grid', gridTemplateColumns: '40px 1fr', gap: '0 var(--space-6)' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '40px 1fr',
+          gap: isMobile ? '0' : '0 var(--space-6)',
+        }}>
 
-          {/* Left: animated vertical line */}
-          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div style={{
-              position: 'absolute', top: 0, bottom: 0, left: '50%',
-              width: '1px', background: 'var(--color-border)',
-              transform: 'translateX(-50%)',
-            }} />
-            <div ref={lineRef} style={{
-              position: 'absolute', top: 0, bottom: 0, left: '50%',
-              width: '2px', transform: 'translateX(-50%)',
-              background: 'linear-gradient(to bottom, #22C55E 0%, #22C55E 60%, #EAB308 70%, #4361EE 100%)',
-              transformOrigin: 'top center',
-            }} />
-          </div>
+          {/* Left: animated vertical line — desktop only */}
+          {!isMobile && (
+            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{
+                position: 'absolute', top: 0, bottom: 0, left: '50%',
+                width: '1px', background: 'var(--color-border)',
+                transform: 'translateX(-50%)',
+              }} />
+              <div ref={lineRef} style={{
+                position: 'absolute', top: 0, bottom: 0, left: '50%',
+                width: '2px', transform: 'translateX(-50%)',
+                background: 'linear-gradient(to bottom, #22C55E 0%, #22C55E 60%, #EAB308 70%, #4361EE 100%)',
+                transformOrigin: 'top center',
+              }} />
+            </div>
+          )}
 
           {/* Right: items */}
-          <div ref={itemsRef} style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+          <div
+            ref={itemsRef}
+            style={{
+              display: 'flex', flexDirection: 'column', gap: '0',
+              borderLeft: isMobile ? '2px solid var(--color-border)' : 'none',
+              paddingLeft: isMobile ? 'var(--space-5)' : '0',
+            }}
+          >
             {TIMELINE.map((item, i) => {
               const cfg = STATUS_CONFIG[item.status]
               const isPrevDifferent = i > 0 && TIMELINE[i - 1].status !== item.status
@@ -289,21 +304,23 @@ export function RoadmapSection() {
                       marginBottom: 'var(--space-4)',
                       paddingTop: i === 0 ? 0 : 'var(--space-2)',
                     }}>
-                      <span style={{
-                        position: 'relative', left: '-48px',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        width: '16px', height: '16px', borderRadius: '50%',
-                        backgroundColor: cfg.dot,
-                        boxShadow: `0 0 12px ${cfg.dot}, 0 0 24px ${cfg.dot}60`,
-                        flexShrink: 0,
-                      }} />
+                      {!isMobile && (
+                        <span style={{
+                          position: 'relative', left: '-48px',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          width: '16px', height: '16px', borderRadius: '50%',
+                          backgroundColor: cfg.dot,
+                          boxShadow: `0 0 12px ${cfg.dot}, 0 0 24px ${cfg.dot}60`,
+                          flexShrink: 0,
+                        }} />
+                      )}
                       <span style={{
                         fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
                         letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase',
                         color: cfg.color, fontWeight: 700,
                         background: cfg.bg, border: `1px solid ${cfg.border}`,
                         borderRadius: 'var(--radius-full)', padding: '0.25rem 0.75rem',
-                        marginLeft: '-24px',
+                        marginLeft: isMobile ? '0' : '-24px',
                       }}>
                         {cfg.label}
                       </span>
@@ -319,7 +336,8 @@ export function RoadmapSection() {
                       position: 'relative',
                     }}
                   >
-                    {/* Dot in line column */}
+                    {/* Dot in line column — desktop only (mobile uses left border) */}
+                    {!isMobile && (
                     <div style={{
                       position: 'absolute', left: '-52px', top: '50%', transform: 'translateY(-50%)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -342,6 +360,7 @@ export function RoadmapSection() {
                         </svg>
                       )}
                     </div>
+                    )}
 
                     {/* Content card */}
                     <div

@@ -7,6 +7,8 @@ import { useUIStore } from '@/stores/ui.store'
 import { prefersReducedMotion } from '@/lib/motion'
 import { useMagnetic } from '@/hooks/useMagnetic'
 import { RoleSelector, HERO_SUBS, type Role } from '@/components/layout/RoleSelector'
+import { useIsMobile } from '@/hooks/useMediaQuery'
+import { openCalendly } from '@/lib/calendly'
 
 const STAT_ITEMS = [
   { value: '18', label: 'Specialist Agents' },
@@ -39,6 +41,7 @@ export function HeroSection() {
   const ghostRef   = useMagnetic<HTMLAnchorElement>(0.25)
   const [role, setRole] = useState<Role | null>(null)
   const subRef = useRef<HTMLParagraphElement>(null)
+  const isMobile = useIsMobile()
 
   /* Pick up role stored from a previous session */
   useEffect(() => {
@@ -172,7 +175,8 @@ export function HeroSection() {
         justifyContent: 'center',
         overflow: 'hidden',
         backgroundColor: 'var(--color-bg-void)',
-        paddingTop: '5rem',
+        paddingTop: isMobile ? '5.5rem' : '5rem',
+        paddingBottom: isMobile ? '6rem' : undefined,
       }}
     >
       {/* Dot grid — separate ref for slow parallax */}
@@ -234,15 +238,15 @@ export function HeroSection() {
         pointerEvents: 'none',
       }} />
 
-      {/* Two-column grid: content left, ring right */}
+      {/* Content + ring: two-column on desktop, stacked on mobile */}
       <div style={{
         position: 'relative', zIndex: 1,
         maxWidth: 'var(--max-w-content)',
         width: '100%',
         padding: '0 var(--section-padding-x)',
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: 'var(--space-4)',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+        gap: isMobile ? 'var(--space-10)' : 'var(--space-4)',
         alignItems: 'center',
         alignSelf: 'center',
       }}>
@@ -284,7 +288,7 @@ export function HeroSection() {
           {/* Headline */}
           <h1 style={{
             fontFamily: 'var(--font-display)', fontWeight: 800,
-            fontSize: 'clamp(1.85rem, 2.8vw, 2.9rem)',
+            fontSize: isMobile ? 'clamp(2rem, 8vw, 2.9rem)' : 'clamp(1.85rem, 2.8vw, 2.9rem)',
             lineHeight: 'var(--leading-tight)',
             letterSpacing: 'var(--tracking-tighter)',
             marginBottom: '1.75rem',
@@ -306,7 +310,7 @@ export function HeroSection() {
           <p ref={subRef} data-hero-sub="" style={{
             fontSize: 'var(--text-base)', lineHeight: 'var(--leading-relaxed)',
             color: 'var(--color-text-secondary)',
-            maxWidth: '440px', marginBottom: '2.5rem',
+            maxWidth: isMobile ? '100%' : '440px', marginBottom: '2.5rem',
           }}>
             {role
               ? HERO_SUBS[role]
@@ -314,14 +318,11 @@ export function HeroSection() {
           </p>
 
           {/* CTAs */}
-          <div data-hero-ctas="" style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-start', marginBottom: '3.5rem' }}>
+          <div data-hero-ctas="" style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-start', marginBottom: '3.5rem', flexWrap: 'wrap' }}>
             <a
               ref={primaryRef}
               href="#"
-              onClick={(e) => {
-                e.preventDefault()
-                ;(window as any).Calendly?.initPopupWidget({ url: 'https://calendly.com/reza-oraclous/consultancy-with-reza-oraclous' })
-              }}
+              onClick={(e) => { e.preventDefault(); openCalendly() }}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
                 padding: '0.6rem 1rem', background: 'var(--gradient-accent)',
@@ -366,13 +367,16 @@ export function HeroSection() {
           </div>
 
           {/* Stat row */}
-          <div style={{
+          <div style={isMobile ? {
+            display: 'grid', gridTemplateColumns: 'repeat(2, auto)',
+            justifyContent: 'start', gap: 'var(--space-6) var(--space-8)',
+          } : {
             display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
             gap: '0', flexWrap: 'wrap',
           }}>
             {STAT_ITEMS.map((s, i) => (
               <div key={s.label} data-hero-stat="" style={{ display: 'flex', alignItems: 'center' }}>
-                {i > 0 && (
+                {!isMobile && i > 0 && (
                   <span style={{ width: '1px', height: '24px', backgroundColor: 'var(--color-border)', margin: '0 1.5rem' }} />
                 )}
                 <div style={{ textAlign: 'center' }}>
@@ -392,9 +396,9 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* RIGHT: loop ring visualization */}
+        {/* Ring visualization */}
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--space-4)' }}>
-          <svg ref={ringRef} viewBox="-20 -20 440 440" width="100%" style={{ display: 'block', overflow: 'visible', opacity: 0, maxWidth: '520px' }} data-hero-ring="">
+          <svg ref={ringRef} viewBox="-20 -20 440 440" width="100%" style={{ display: 'block', overflow: 'visible', opacity: 0, maxWidth: isMobile ? '280px' : '520px' }} data-hero-ring="">
             {/* Outer subtle ring */}
             <circle cx={CX} cy={CY} r={R + 22} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
             {/* Main track */}
@@ -441,10 +445,10 @@ export function HeroSection() {
 
       </div>
 
-      {/* Scroll cue */}
+      {/* Scroll cue — hide on mobile to avoid overlap with stacked ring */}
       <div aria-hidden="true" style={{
         position: 'absolute', bottom: '2.5rem', left: '50%', transform: 'translateX(-50%)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
+        display: isMobile ? 'none' : 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
       }}>
         <span style={{
           fontFamily: 'var(--font-mono)', fontSize: '10px',

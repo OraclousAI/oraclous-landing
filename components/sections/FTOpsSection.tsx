@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useEffect, useState } from 'react'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 import { gsap } from '@/lib/gsap'
 import { EASE } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/motion'
@@ -52,6 +53,7 @@ function FTOpsRow({ item, index, isOpen, onToggle }: {
   const letterRef   = useRef<HTMLSpanElement>(null)
   // biome-ignore lint/suspicious/noExplicitAny
   const pulseAnim = useRef<any>(null)
+  const isMobile = useIsMobile()
   const { letter, term, def, expanded, chips, accent, accentDim, accentBorder } = item
 
   useEffect(() => {
@@ -146,7 +148,9 @@ function FTOpsRow({ item, index, isOpen, onToggle }: {
       style={{
         position: 'relative',
         background: `linear-gradient(135deg, ${accentDim} 0%, rgba(13,13,26,0.6) 100%)`,
-        border: '1px solid var(--color-border)',
+        borderTop: '1px solid var(--color-border)',
+        borderRight: '1px solid var(--color-border)',
+        borderBottom: '1px solid var(--color-border)',
         borderLeft: `3px solid ${accent}40`,
         borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
@@ -167,28 +171,48 @@ function FTOpsRow({ item, index, isOpen, onToggle }: {
       {/* Always-visible header row */}
       <div style={{
         position: 'relative', zIndex: 1,
-        display: 'grid', gridTemplateColumns: '160px 1fr auto',
-        gap: 'var(--space-8)', alignItems: 'center',
-        padding: 'var(--space-6) var(--space-8)',
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr auto' : '160px 1fr auto',
+        gap: isMobile ? 'var(--space-4)' : 'var(--space-8)',
+        alignItems: isMobile ? 'flex-start' : 'center',
+        padding: isMobile ? 'var(--space-5) var(--space-5)' : 'var(--space-6) var(--space-8)',
       }}>
-        <div>
-          <span ref={letterRef} style={{
-            fontFamily: 'var(--font-mono)', fontWeight: 800,
-            fontSize: 'var(--text-2xl)', color: accent,
-            letterSpacing: '-0.02em', lineHeight: 1,
-            display: 'block', marginBottom: '0.2rem',
-          }}>{letter}</span>
-          <span style={{
-            fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
-            letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
-            color: 'var(--color-text-muted)',
-          }}>{term}</span>
-        </div>
-        <p style={{
-          fontSize: 'var(--text-base)', lineHeight: 'var(--leading-relaxed)',
-          color: 'var(--color-text-tertiary)',
-        }}>{def}</p>
-        {/* Chevron */}
+        {isMobile ? (
+          /* Mobile: letter + term inline, def below in expanded content */
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)' }}>
+            <span ref={letterRef} style={{
+              fontFamily: 'var(--font-mono)', fontWeight: 800,
+              fontSize: 'var(--text-xl)', color: accent,
+              letterSpacing: '-0.02em', lineHeight: 1, flexShrink: 0,
+            }}>{letter}</span>
+            <span style={{
+              fontFamily: 'var(--font-display)', fontWeight: 700,
+              fontSize: 'var(--text-base)', color: 'var(--color-text-primary)',
+              lineHeight: 'var(--leading-snug)',
+            }}>{term}</span>
+          </div>
+        ) : (
+          <>
+            <div>
+              <span ref={letterRef} style={{
+                fontFamily: 'var(--font-mono)', fontWeight: 800,
+                fontSize: 'var(--text-2xl)', color: accent,
+                letterSpacing: '-0.02em', lineHeight: 1,
+                display: 'block', marginBottom: '0.2rem',
+              }}>{letter}</span>
+              <span style={{
+                fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+                letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase',
+                color: 'var(--color-text-muted)',
+              }}>{term}</span>
+            </div>
+            <p style={{
+              fontSize: 'var(--text-base)', lineHeight: 'var(--leading-relaxed)',
+              color: 'var(--color-text-tertiary)',
+            }}>{def}</p>
+          </>
+        )}
+        {/* Chevron — always last in the grid */}
         <svg
           width="16" height="16" viewBox="0 0 16 16" fill="none"
           aria-hidden="true"
@@ -196,6 +220,7 @@ function FTOpsRow({ item, index, isOpen, onToggle }: {
             color: accent, flexShrink: 0,
             transition: 'transform 0.3s',
             transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+            marginTop: isMobile ? '0.2rem' : undefined,
           }}
         >
           <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -209,11 +234,17 @@ function FTOpsRow({ item, index, isOpen, onToggle }: {
       >
         <div style={{
           position: 'relative', zIndex: 1,
-          padding: '0 var(--space-8) var(--space-6)',
-          paddingLeft: `calc(160px + var(--space-8) + var(--space-8))`,
+          padding: isMobile
+            ? `var(--space-5) var(--space-5) var(--space-5)`
+            : `var(--space-5) var(--space-8) var(--space-6) calc(160px + var(--space-8) + var(--space-8))`,
           borderTop: `1px solid ${accentBorder}`,
-          paddingTop: 'var(--space-5)',
         }}>
+          {isMobile && (
+            <p style={{
+              fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-relaxed)',
+              color: 'var(--color-text-tertiary)', marginBottom: 'var(--space-4)',
+            }}>{def}</p>
+          )}
           <p style={{
             fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-relaxed)',
             color: 'var(--color-text-secondary)',

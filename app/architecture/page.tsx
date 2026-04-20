@@ -8,6 +8,7 @@ import { prefersReducedMotion } from '@/lib/motion'
 import { FadeUp } from '@/components/animation/FadeUp'
 import { WordReveal } from '@/components/animation/WordReveal'
 import { openCalendly } from '@/lib/calendly'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 
 const LAYERS = [
   {
@@ -207,6 +208,7 @@ export default function ArchitecturePage() {
   const pageRef      = useRef<HTMLDivElement>(null)
   const detailRef    = useRef<HTMLDivElement>(null)
   const [activeId, setActiveId] = useState<string>('l3')
+  const isMobile = useIsMobile()
 
   const activeLayer = LAYERS.find(l => l.id === activeId) ?? LAYERS[0]
 
@@ -328,17 +330,19 @@ export default function ArchitecturePage() {
                     {layer.name}
                   </span>
                 </div>
-                <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                  {layer.chips.slice(0, 3).map(chip => (
-                    <span key={chip} style={{
-                      fontFamily: 'var(--font-mono)', fontSize: '10px',
-                      color: 'var(--color-text-muted)', border: '1px solid var(--color-border)',
-                      borderRadius: 'var(--radius-sm)', padding: '0.1rem 0.4rem',
-                    }}>
-                      {chip}
-                    </span>
-                  ))}
-                </div>
+                {!isMobile && (
+                  <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                    {layer.chips.slice(0, 3).map(chip => (
+                      <span key={chip} style={{
+                        fontFamily: 'var(--font-mono)', fontSize: '10px',
+                        color: 'var(--color-text-muted)', border: '1px solid var(--color-border)',
+                        borderRadius: 'var(--radius-sm)', padding: '0.1rem 0.4rem',
+                      }}>
+                        {chip}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -349,12 +353,14 @@ export default function ArchitecturePage() {
       <div style={{
         maxWidth: 'var(--max-w-content)', margin: '0 auto',
         padding: '0 var(--section-padding-x) var(--space-24)',
-        display: 'grid', gridTemplateColumns: '320px 1fr', gap: 'var(--space-8)',
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr' : '320px 1fr',
+        gap: isMobile ? 'var(--space-6)' : 'var(--space-8)',
         alignItems: 'flex-start',
       }}>
 
         {/* Layer cards */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', position: 'sticky', top: '88px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', position: isMobile ? 'static' : 'sticky', top: '88px' }}>
           {LAYERS.map(layer => (
             <LayerCard
               key={layer.id}

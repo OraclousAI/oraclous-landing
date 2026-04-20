@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { openCalendly } from '@/lib/calendly'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { EASE } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/motion'
@@ -49,6 +50,7 @@ export default function RoadmapPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [layerFilter,  setLayerFilter]  = useState<LayerFilter>('all')
   const [openIdx,      setOpenIdx]      = useState<number | null>(null)
+  const isMobile = useIsMobile()
 
   /* Initial entrance animations */
   useEffect(() => {
@@ -200,7 +202,9 @@ export default function RoadmapPage() {
             fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
             color: 'var(--color-text-muted)', letterSpacing: 'var(--tracking-wide)',
             padding: 'var(--space-3) var(--space-5)',
-            border: '1px solid var(--color-border)',
+            borderTop: '1px solid var(--color-border)',
+            borderRight: '1px solid var(--color-border)',
+            borderBottom: '1px solid var(--color-border)',
             borderLeft: '3px solid #22C55E',
             borderRadius: 'var(--radius-md)',
             display: 'inline-block',
@@ -248,27 +252,29 @@ export default function RoadmapPage() {
           </div>
 
           {/* Three stat cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-4)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: isMobile ? 'var(--space-2)' : 'var(--space-4)' }}>
             {[
               { count: SHIPPED_COUNT,     label: 'Items Shipped',     cfg: STATUS_CONFIG.shipped },
               { count: IN_PROGRESS_COUNT, label: 'In Progress',       cfg: STATUS_CONFIG['in-progress'] },
               { count: COMMITTED_COUNT,   label: 'Committed',         cfg: STATUS_CONFIG.committed },
             ].map(({ count, label, cfg }) => (
               <div key={label} style={{
-                padding: 'var(--space-5) var(--space-6)',
+                padding: isMobile ? 'var(--space-3) var(--space-3)' : 'var(--space-5) var(--space-6)',
                 background: cfg.bg,
                 border: `1px solid ${cfg.border}`,
                 borderRadius: 'var(--radius-md)',
               }}>
                 <div style={{
                   fontFamily: 'var(--font-display)', fontWeight: 800,
-                  fontSize: 'var(--text-3xl)', color: cfg.color, lineHeight: 1,
+                  fontSize: isMobile ? 'var(--text-xl)' : 'var(--text-3xl)',
+                  color: cfg.color, lineHeight: 1,
                   marginBottom: 'var(--space-1)',
                 }}>
                   <CountUp to={count} duration={1.4} />
                 </div>
                 <div style={{
-                  fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: isMobile ? '9px' : 'var(--text-xs)',
                   color: 'var(--color-text-muted)', letterSpacing: 'var(--tracking-wide)',
                   textTransform: 'uppercase',
                 }}>{label}</div>
@@ -282,7 +288,11 @@ export default function RoadmapPage() {
       <div style={{
         maxWidth: 'var(--max-w-content)', margin: '0 auto',
         padding: '0 var(--section-padding-x) var(--space-10)',
-        display: 'flex', gap: 'var(--space-6)', flexWrap: 'wrap', alignItems: 'center',
+        display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: isMobile ? 'var(--space-3)' : 'var(--space-6)',
+        flexWrap: 'wrap',
+        alignItems: isMobile ? 'flex-start' : 'center',
       }}>
         {/* Status filters */}
         <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
@@ -307,8 +317,8 @@ export default function RoadmapPage() {
           })}
         </div>
 
-        {/* Divider */}
-        <div style={{ width: '1px', height: '24px', background: 'var(--color-border)' }} />
+        {/* Divider — desktop only */}
+        {!isMobile && <div style={{ width: '1px', height: '24px', background: 'var(--color-border)' }} />}
 
         {/* Layer filters */}
         <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
@@ -347,24 +357,37 @@ export default function RoadmapPage() {
         maxWidth: 'var(--max-w-content)', margin: '0 auto',
         padding: '0 var(--section-padding-x) var(--space-24)',
       }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '40px 1fr', gap: '0 var(--space-6)' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '40px 1fr',
+          gap: isMobile ? '0' : '0 var(--space-4)',
+        }}>
 
-          {/* Vertical line column */}
-          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div style={{
-              position: 'absolute', top: 0, bottom: 0, left: '50%',
-              width: '1px', background: 'var(--color-border)', transform: 'translateX(-50%)',
-            }} />
-            <div ref={lineRef} style={{
-              position: 'absolute', top: 0, bottom: 0, left: '50%',
-              width: '2px', transform: 'translateX(-50%)',
-              background: 'linear-gradient(to bottom, #22C55E 0%, #22C55E 50%, #EAB308 65%, #4361EE 100%)',
-              transformOrigin: 'top center',
-            }} />
-          </div>
+          {/* Vertical line column — desktop only */}
+          {!isMobile && (
+            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{
+                position: 'absolute', top: 0, bottom: 0, left: '50%',
+                width: '1px', background: 'var(--color-border)', transform: 'translateX(-50%)',
+              }} />
+              <div ref={lineRef} style={{
+                position: 'absolute', top: 0, bottom: 0, left: '50%',
+                width: '2px', transform: 'translateX(-50%)',
+                background: 'linear-gradient(to bottom, #22C55E 0%, #22C55E 50%, #EAB308 65%, #4361EE 100%)',
+                transformOrigin: 'top center',
+              }} />
+            </div>
+          )}
 
           {/* Items column */}
-          <div ref={itemsRef} style={{ display: 'flex', flexDirection: 'column' }}>
+          <div
+            ref={itemsRef}
+            style={{
+              display: 'flex', flexDirection: 'column',
+              borderLeft: isMobile ? '2px solid var(--color-border)' : 'none',
+              paddingLeft: isMobile ? 'var(--space-4)' : '0',
+            }}
+          >
             {TIMELINE.map((item, i) => {
               const cfg = STATUS_CONFIG[item.status]
               const lcfg = item.layer ? LAYER_CONFIG[item.layer] : null
@@ -386,20 +409,22 @@ export default function RoadmapPage() {
                       marginTop: i === 0 ? 0 : 'var(--space-8)',
                       marginBottom: 'var(--space-4)',
                     }}>
-                      <span style={{
-                        position: 'relative', left: '-48px', flexShrink: 0,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        width: '18px', height: '18px', borderRadius: '50%',
-                        backgroundColor: cfg.dot,
-                        boxShadow: `0 0 14px ${cfg.dot}, 0 0 28px ${cfg.dot}60`,
-                      }} />
+                      {!isMobile && (
+                        <span style={{
+                          position: 'relative', left: '-48px', flexShrink: 0,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          width: '18px', height: '18px', borderRadius: '50%',
+                          backgroundColor: cfg.dot,
+                          boxShadow: `0 0 14px ${cfg.dot}, 0 0 28px ${cfg.dot}60`,
+                        }} />
+                      )}
                       <span style={{
                         fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
                         letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase',
                         color: cfg.color, fontWeight: 700,
                         background: cfg.bg, border: `1px solid ${cfg.border}`,
                         borderRadius: 'var(--radius-full)', padding: '0.3rem 0.9rem',
-                        marginLeft: '-28px',
+                        marginLeft: isMobile ? '0' : '-28px',
                       }}>
                         {cfg.label}
                       </span>
@@ -412,7 +437,8 @@ export default function RoadmapPage() {
                     data-status={item.status}
                     style={{ paddingTop: 'var(--space-2)', paddingBottom: 'var(--space-2)', position: 'relative' }}
                   >
-                    {/* Node dot */}
+                    {/* Node dot — desktop only */}
+                    {!isMobile && (
                     <div style={{
                       position: 'absolute', left: '-52px', top: '50%', transform: 'translateY(-50%)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -431,6 +457,7 @@ export default function RoadmapPage() {
                         <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: cfg.dot }} />
                       )}
                     </div>
+                    )}
 
                     {/* Card */}
                     <div

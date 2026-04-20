@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useEffect, useState } from 'react'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 import { gsap } from '@/lib/gsap'
 import { EASE } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/motion'
@@ -103,6 +104,7 @@ function LayerCard({ layer, isHovered, isCascade, onHover, onLeave }: {
 }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const spotRef = useRef<HTMLDivElement>(null)
+  const isMobile = useIsMobile()
   const { num, name, tagline, chips, accent, accentDim, accentBorder, accentGlow } = layer
 
   useEffect(() => {
@@ -153,12 +155,16 @@ function LayerCard({ layer, isHovered, isCascade, onHover, onLeave }: {
       onMouseEnter={onHover}
       onMouseLeave={onMouseLeave}
       style={{
-        display: 'grid', gridTemplateColumns: '72px 1fr auto',
-        gap: 'var(--space-8)', alignItems: 'center',
-        padding: 'var(--space-8)',
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '48px 1fr' : '72px 1fr auto',
+        gap: isMobile ? 'var(--space-4)' : 'var(--space-8)',
+        alignItems: isMobile ? 'flex-start' : 'center',
+        padding: isMobile ? 'var(--space-5)' : 'var(--space-8)',
         position: 'relative', overflow: 'hidden',
         background: `linear-gradient(135deg, ${accentDim} 0%, rgba(13,13,26,0.95) 100%)`,
-        border: `1px solid ${accentBorder}`,
+        borderTop: `1px solid ${accentBorder}`,
+        borderRight: `1px solid ${accentBorder}`,
+        borderBottom: `1px solid ${accentBorder}`,
         borderLeft: `3px solid ${accent}`,
         borderRadius: 'var(--radius-xl)',
         transition: 'box-shadow 0.3s',
@@ -177,44 +183,64 @@ function LayerCard({ layer, isHovered, isCascade, onHover, onLeave }: {
       <div style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
         <span style={{
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-          width: '48px', height: '48px',
+          width: isMobile ? '38px' : '48px', height: isMobile ? '38px' : '48px',
           fontFamily: 'var(--font-mono)', fontWeight: 700,
-          fontSize: 'var(--text-base)', color: accent,
+          fontSize: isMobile ? 'var(--text-xs)' : 'var(--text-base)', color: accent,
           background: accentDim.replace('0.08', '0.15'),
           border: `1px solid ${accentBorder}`,
           borderRadius: 'var(--radius-md)',
         }}>{num}</span>
       </div>
 
-      {/* Layer info */}
-      <div style={{ position: 'relative', zIndex: 1 }}>
+      {/* Layer info — on mobile spans full width, chips go below */}
+      <div style={{ position: 'relative', zIndex: 1, gridColumn: isMobile ? '2 / 3' : undefined }}>
         <h3 style={{
           fontFamily: 'var(--font-display)', fontWeight: 700,
-          fontSize: 'var(--text-xl)', color: 'var(--color-text-primary)',
+          fontSize: isMobile ? 'var(--text-base)' : 'var(--text-xl)', color: 'var(--color-text-primary)',
           marginBottom: '0.4rem',
         }}>{name}</h3>
         <p style={{
           fontSize: 'var(--text-sm)', color: 'var(--color-text-tertiary)',
           lineHeight: 'var(--leading-relaxed)',
         }}>{tagline}</p>
+
+        {/* On mobile: chips below the tagline, inside the same column */}
+        {isMobile && (
+          <div style={{
+            display: 'flex', flexWrap: 'wrap', gap: '0.375rem',
+            marginTop: 'var(--space-3)',
+          }}>
+            {chips.map((chip) => (
+              <span key={chip} style={{
+                fontFamily: 'var(--font-mono)', fontSize: '11px',
+                color: accent, background: accentDim,
+                border: `1px solid ${accentBorder}`,
+                borderRadius: 'var(--radius-full)', padding: '0.2rem 0.55rem',
+                whiteSpace: 'nowrap',
+              }}>{chip}</span>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Feature chips */}
-      <div style={{
-        position: 'relative', zIndex: 1,
-        display: 'flex', flexWrap: 'wrap', gap: '0.375rem',
-        justifyContent: 'flex-end', maxWidth: '280px',
-      }}>
-        {chips.map((chip) => (
-          <span key={chip} style={{
-            fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
-            color: accent, background: accentDim,
-            border: `1px solid ${accentBorder}`,
-            borderRadius: 'var(--radius-full)', padding: '0.2rem 0.65rem',
-            whiteSpace: 'nowrap',
-          }}>{chip}</span>
-        ))}
-      </div>
+      {/* Feature chips — desktop only (right column) */}
+      {!isMobile && (
+        <div style={{
+          position: 'relative', zIndex: 1,
+          display: 'flex', flexWrap: 'wrap', gap: '0.375rem',
+          justifyContent: 'flex-end', maxWidth: '280px',
+        }}>
+          {chips.map((chip) => (
+            <span key={chip} style={{
+              fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+              color: accent, background: accentDim,
+              border: `1px solid ${accentBorder}`,
+              borderRadius: 'var(--radius-full)', padding: '0.2rem 0.65rem',
+              whiteSpace: 'nowrap',
+            }}>{chip}</span>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -222,6 +248,7 @@ function LayerCard({ layer, isHovered, isCascade, onHover, onLeave }: {
 export function ArchitectureSection() {
   const sectionRef  = useRef<HTMLElement>(null)
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     if (prefersReducedMotion()) return
@@ -255,8 +282,10 @@ export function ArchitectureSection() {
 
         {/* Header */}
         <div style={{
-          display: 'grid', gridTemplateColumns: '1fr 1fr',
-          gap: 'var(--space-12)', alignItems: 'end',
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+          gap: isMobile ? 'var(--space-6)' : 'var(--space-12)',
+          alignItems: 'end',
           marginBottom: 'var(--section-gap)',
         }}>
           <div>

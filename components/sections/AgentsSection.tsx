@@ -118,11 +118,15 @@ const PIPELINE_STAGES = [
 
 function PipelineBar({ activeStage, onSelect }: { activeStage: string | null; onSelect: (name: string | null) => void }) {
   return (
-    <div style={{
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      gap: 0, marginBottom: 'var(--space-16)', flexWrap: 'nowrap',
-      overflowX: 'auto',
-    }}>
+    <div
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
+        gap: 0, marginBottom: 'var(--space-16)', flexWrap: 'nowrap',
+        overflowX: 'auto', paddingBottom: '4px',
+        scrollbarWidth: 'none',
+      } as React.CSSProperties}
+    >
       {PIPELINE_STAGES.map((stage, i) => {
         const isActive = activeStage === stage.name
         return (
@@ -291,7 +295,8 @@ export function AgentsSection() {
                 <div
                   onClick={() => handleStageSelect(isActive ? null : stageName)}
                   style={{
-                    display: 'flex', alignItems: 'center', gap: 'var(--space-4)',
+                    display: 'flex', alignItems: 'center', gap: 'var(--space-3)',
+                    flexWrap: 'wrap',
                     marginBottom: 'var(--space-5)', cursor: 'pointer',
                     userSelect: 'none',
                   }}
