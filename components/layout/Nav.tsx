@@ -9,6 +9,7 @@ import { useUIStore } from '@/stores/ui.store'
 import { useMagnetic } from '@/hooks/useMagnetic'
 import { useCursorState } from '@/hooks/useCursorState'
 import { useTextScramble } from '@/hooks/useTextScramble'
+import { openCalendly } from '@/lib/calendly'
 
 /* ─── Static data ────────────────────────────────────────────────────── */
 
@@ -309,10 +310,7 @@ export function Nav() {
             <a
               ref={githubRef}
               href="#"
-              onClick={(e) => {
-                e.preventDefault()
-                ;(window as any).Calendly?.initPopupWidget({ url: 'https://calendly.com/reza-oraclous/consultancy-with-reza-oraclous' })
-              }}
+              onClick={(e) => { e.preventDefault(); openCalendly() }}
               className="hidden md:inline-flex"
               style={{
                 display: 'none',
@@ -347,7 +345,12 @@ export function Nav() {
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                padding: '0.5rem',
+                padding: '0.75rem',
+                minWidth: '44px',
+                minHeight: '44px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 zIndex: 'calc(var(--z-drawer) + 1)',
                 position: 'relative',
               }}
@@ -420,15 +423,12 @@ export function Nav() {
         >
           <a
             href="#"
-            onClick={(e) => {
-              e.preventDefault()
-              closeMenu()
-              ;(window as any).Calendly?.initPopupWidget({ url: 'https://calendly.com/reza-oraclous/consultancy-with-reza-oraclous' })
-            }}
+            onClick={(e) => { e.preventDefault(); closeMenu(); openCalendly() }}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.5rem',
+              minHeight: '44px',
               fontFamily: 'var(--font-mono)',
               fontSize: 'var(--text-sm)',
               letterSpacing: 'var(--tracking-wide)',

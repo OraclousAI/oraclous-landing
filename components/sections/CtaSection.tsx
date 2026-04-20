@@ -6,6 +6,7 @@ import { prefersReducedMotion } from '@/lib/motion'
 import { FadeUp } from '@/components/animation/FadeUp'
 import { WordReveal } from '@/components/animation/WordReveal'
 import { useMagnetic } from '@/hooks/useMagnetic'
+import { openCalendly } from '@/lib/calendly'
 
 function burstParticles(x: number, y: number) {
   if (prefersReducedMotion()) return
@@ -182,11 +183,7 @@ export function CtaSection() {
               <a
                 ref={callRef}
                 href="#"
-                onClick={(e) => {
-                  e.preventDefault()
-                  burstParticles(e.clientX, e.clientY)
-                  ;(window as any).Calendly?.initPopupWidget({ url: 'https://calendly.com/reza-oraclous/consultancy-with-reza-oraclous' })
-                }}
+                onClick={(e) => { e.preventDefault(); burstParticles(e.clientX, e.clientY); openCalendly() }}
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
                   padding: '0.85rem 1.5rem', background: 'var(--gradient-accent)',
