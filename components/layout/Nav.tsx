@@ -7,6 +7,8 @@ import { gsap } from '@/lib/gsap'
 import { EASE, DUR } from '@/lib/gsap'
 import { useUIStore } from '@/stores/ui.store'
 import { useMagnetic } from '@/hooks/useMagnetic'
+import { useCursorState } from '@/hooks/useCursorState'
+import { useTextScramble } from '@/hooks/useTextScramble'
 
 /* ─── Static data ────────────────────────────────────────────────────── */
 
@@ -24,14 +26,49 @@ const NAV_LINKS = [
 
 function LogoMark() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-      <rect
-        x="2" y="2" width="14" height="14" rx="3"
-        stroke="var(--color-accent)"
-        strokeWidth="1.5"
-        style={{ filter: 'drop-shadow(0 0 5px var(--color-accent-glow))' }}
-      />
-      <rect x="6" y="6" width="6" height="6" rx="1.5" fill="var(--color-accent)" />
+    <svg
+      width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+      style={{ filter: 'drop-shadow(0 0 4px rgba(34,211,238,0.35))' }}
+    >
+      <defs>
+        <linearGradient id="navLogoGrad" x1="12" y1="3.5" x2="12" y2="20.5" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#22d3ee" />
+          <stop offset="45%" stopColor="#4361EE" />
+          <stop offset="100%" stopColor="#8B5CF6" />
+        </linearGradient>
+      </defs>
+      {/* Ring */}
+      <circle cx="12" cy="12" r="8.5" stroke="url(#navLogoGrad)" strokeWidth="1" />
+      {/* 0° — top (cyan) */}
+      <circle cx="12" cy="3.5" r="1.7" stroke="#22d3ee" strokeWidth="0.9" fill="#060610" />
+      <circle cx="12" cy="3.5" r="0.65" fill="#22d3ee" />
+      {/* 36° */}
+      <circle cx="17.0" cy="5.1" r="1.45" stroke="#4361EE" strokeWidth="0.85" fill="#060610" />
+      <circle cx="17.0" cy="5.1" r="0.55" fill="#4361EE" />
+      {/* 72° */}
+      <circle cx="20.1" cy="9.4" r="1.45" stroke="#4361EE" strokeWidth="0.85" fill="#060610" />
+      <circle cx="20.1" cy="9.4" r="0.55" fill="#4361EE" />
+      {/* 108° */}
+      <circle cx="20.1" cy="14.6" r="1.45" stroke="#6b72f8" strokeWidth="0.85" fill="#060610" />
+      <circle cx="20.1" cy="14.6" r="0.55" fill="#6b72f8" />
+      {/* 144° */}
+      <circle cx="17.0" cy="18.9" r="1.45" stroke="#8B5CF6" strokeWidth="0.85" fill="#060610" />
+      <circle cx="17.0" cy="18.9" r="0.55" fill="#8B5CF6" />
+      {/* 180° — bottom (violet) */}
+      <circle cx="12" cy="20.5" r="1.7" stroke="#8B5CF6" strokeWidth="0.9" fill="#060610" />
+      <circle cx="12" cy="20.5" r="0.65" fill="#8B5CF6" />
+      {/* 216° */}
+      <circle cx="7.0" cy="18.9" r="1.45" stroke="#8B5CF6" strokeWidth="0.85" fill="#060610" />
+      <circle cx="7.0" cy="18.9" r="0.55" fill="#8B5CF6" />
+      {/* 252° */}
+      <circle cx="3.9" cy="14.6" r="1.45" stroke="#6b72f8" strokeWidth="0.85" fill="#060610" />
+      <circle cx="3.9" cy="14.6" r="0.55" fill="#6b72f8" />
+      {/* 288° */}
+      <circle cx="3.9" cy="9.4" r="1.45" stroke="#4361EE" strokeWidth="0.85" fill="#060610" />
+      <circle cx="3.9" cy="9.4" r="0.55" fill="#4361EE" />
+      {/* 324° */}
+      <circle cx="7.0" cy="5.1" r="1.45" stroke="#4361EE" strokeWidth="0.85" fill="#060610" />
+      <circle cx="7.0" cy="5.1" r="0.55" fill="#4361EE" />
     </svg>
   )
 }
@@ -71,7 +108,9 @@ export function Nav() {
   const isLoaderComplete  = useUIStore((s) => s.isLoaderComplete)
   const activeSection     = useUIStore((s) => s.activeSection)
   const setActiveSection  = useUIStore((s) => s.setActiveSection)
-  const githubRef         = useMagnetic<HTMLAnchorElement>(0.35)
+  const githubRef                             = useMagnetic<HTMLAnchorElement>(0.35)
+  const { onHoverEnter, onHoverLeave }        = useCursorState()
+  const { ref: logoTextRef, scramble }        = useTextScramble<HTMLSpanElement>()
 
   /* Scroll state ---------------------------------------------------- */
   useEffect(() => {
@@ -157,10 +196,12 @@ export function Nav() {
   const onLinkEnter = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     if (e.currentTarget.style.backgroundColor) return
     e.currentTarget.style.color = 'var(--color-text-primary)'
-  }, [])
+    onHoverEnter()
+  }, [onHoverEnter])
   const onLinkLeave = useCallback((e: React.MouseEvent<HTMLAnchorElement>, isActive: boolean) => {
     if (!isActive) e.currentTarget.style.color = 'var(--color-text-tertiary)'
-  }, [])
+    onHoverLeave()
+  }, [onHoverLeave])
 
   /* ── Render ─────────────────────────────────────────────────────── */
   return (
@@ -198,6 +239,8 @@ export function Nav() {
           {/* Logo */}
           <Link
             href="/"
+            onMouseEnter={() => { onHoverEnter(); scramble('Oraclous') }}
+            onMouseLeave={onHoverLeave}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -208,6 +251,7 @@ export function Nav() {
           >
             <LogoMark />
             <span
+              ref={logoTextRef}
               style={{
                 fontFamily: 'var(--font-display)',
                 fontWeight: 700,
@@ -286,8 +330,8 @@ export function Nav() {
                 boxShadow: 'var(--glow-accent-sm)',
                 transition: 'opacity 0.2s, box-shadow 0.2s',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = 'var(--glow-accent-md)' }}
-              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'var(--glow-accent-sm)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = 'var(--glow-accent-md)'; onHoverEnter('book') }}
+              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'var(--glow-accent-sm)'; onHoverLeave() }}
             >
               Book a Call
             </a>

@@ -6,6 +6,7 @@ import { Cursor } from '@/components/layout/Cursor'
 import { Loader } from '@/components/layout/Loader'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
+import { ScrollProgress } from '@/components/layout/ScrollProgress'
 import '@/styles/globals.css'
 
 /* next/font self-hosts fonts — no external Google Fonts request */
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <Loader />
           <Cursor />
+          <ScrollProgress />
           <Nav />
           {children}
           <Footer />

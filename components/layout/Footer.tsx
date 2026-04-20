@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useCursorState } from '@/hooks/useCursorState'
 
 /* ─── Data ───────────────────────────────────────────────────────────── */
 
@@ -61,9 +62,35 @@ const NAV_COLUMNS = [
 function FooterLogo() {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-        <rect x="2" y="2" width="14" height="14" rx="3" stroke="var(--color-accent)" strokeWidth="1.5" />
-        <rect x="6" y="6" width="6" height="6" rx="1.5" fill="var(--color-accent)" />
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="footLogoGrad" x1="12" y1="3.5" x2="12" y2="20.5" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#22d3ee" />
+            <stop offset="45%" stopColor="#4361EE" />
+            <stop offset="100%" stopColor="#8B5CF6" />
+          </linearGradient>
+        </defs>
+        <circle cx="12" cy="12" r="8.5" stroke="url(#footLogoGrad)" strokeWidth="1" />
+        <circle cx="12" cy="3.5" r="1.7" stroke="#22d3ee" strokeWidth="0.9" fill="#060610" />
+        <circle cx="12" cy="3.5" r="0.65" fill="#22d3ee" />
+        <circle cx="17.0" cy="5.1" r="1.45" stroke="#4361EE" strokeWidth="0.85" fill="#060610" />
+        <circle cx="17.0" cy="5.1" r="0.55" fill="#4361EE" />
+        <circle cx="20.1" cy="9.4" r="1.45" stroke="#4361EE" strokeWidth="0.85" fill="#060610" />
+        <circle cx="20.1" cy="9.4" r="0.55" fill="#4361EE" />
+        <circle cx="20.1" cy="14.6" r="1.45" stroke="#6b72f8" strokeWidth="0.85" fill="#060610" />
+        <circle cx="20.1" cy="14.6" r="0.55" fill="#6b72f8" />
+        <circle cx="17.0" cy="18.9" r="1.45" stroke="#8B5CF6" strokeWidth="0.85" fill="#060610" />
+        <circle cx="17.0" cy="18.9" r="0.55" fill="#8B5CF6" />
+        <circle cx="12" cy="20.5" r="1.7" stroke="#8B5CF6" strokeWidth="0.9" fill="#060610" />
+        <circle cx="12" cy="20.5" r="0.65" fill="#8B5CF6" />
+        <circle cx="7.0" cy="18.9" r="1.45" stroke="#8B5CF6" strokeWidth="0.85" fill="#060610" />
+        <circle cx="7.0" cy="18.9" r="0.55" fill="#8B5CF6" />
+        <circle cx="3.9" cy="14.6" r="1.45" stroke="#6b72f8" strokeWidth="0.85" fill="#060610" />
+        <circle cx="3.9" cy="14.6" r="0.55" fill="#6b72f8" />
+        <circle cx="3.9" cy="9.4" r="1.45" stroke="#4361EE" strokeWidth="0.85" fill="#060610" />
+        <circle cx="3.9" cy="9.4" r="0.55" fill="#4361EE" />
+        <circle cx="7.0" cy="5.1" r="1.45" stroke="#4361EE" strokeWidth="0.85" fill="#060610" />
+        <circle cx="7.0" cy="5.1" r="0.55" fill="#4361EE" />
       </svg>
       <span
         style={{
@@ -83,6 +110,8 @@ function FooterLogo() {
 /* ─── Footer ─────────────────────────────────────────────────────────── */
 
 export function Footer() {
+  const { onHoverEnter, onHoverLeave } = useCursorState()
+
   return (
     <footer
       style={{
@@ -144,11 +173,13 @@ export function Footer() {
                   e.currentTarget.style.color = 'var(--color-text-primary)'
                   e.currentTarget.style.borderColor = 'var(--color-border-accent)'
                   e.currentTarget.style.backgroundColor = 'var(--color-accent-dim)'
+                  onHoverEnter()
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.color = 'var(--color-text-tertiary)'
                   e.currentTarget.style.borderColor = 'var(--color-border)'
                   e.currentTarget.style.backgroundColor = 'transparent'
+                  onHoverLeave()
                 }}
               >
                 {icon}
@@ -183,8 +214,8 @@ export function Footer() {
                       textDecoration: 'none',
                       transition: 'color 0.2s',
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-text-primary)' }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-text-tertiary)' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-text-primary)'; onHoverEnter() }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-text-tertiary)'; onHoverLeave() }}
                   >
                     {label}
                   </Link>
@@ -281,8 +312,8 @@ export function Footer() {
               textDecoration: 'none',
               transition: 'color 0.2s',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-text-primary)' }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-text-tertiary)' }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-text-primary)'; onHoverEnter() }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-text-tertiary)'; onHoverLeave() }}
           >
             Claude Code
           </a>
