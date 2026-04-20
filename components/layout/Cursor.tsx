@@ -65,7 +65,7 @@ export function Cursor() {
       <div
         ref={dotRef}
         className={cn(
-          'absolute w-[10px] h-[10px] -translate-x-1/2 -translate-y-1/2 rounded-full',
+          'absolute w-2.5 h-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full',
           'bg-white mix-blend-difference'
         )}
         style={{ willChange: 'transform' }}

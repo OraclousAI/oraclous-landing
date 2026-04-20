@@ -292,31 +292,7 @@ export function Footer() {
             letterSpacing: 'var(--tracking-wide)',
           }}
         >
-          © 2025 Oraclous · MIT License
-        </span>
-        <span
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 'var(--text-xs)',
-            color: 'var(--color-text-muted)',
-            letterSpacing: 'var(--tracking-wide)',
-          }}
-        >
-          Built with{' '}
-          <a
-            href="https://claude.ai/code"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: 'var(--color-text-tertiary)',
-              textDecoration: 'none',
-              transition: 'color 0.2s',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-text-primary)'; onHoverEnter() }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-text-tertiary)'; onHoverLeave() }}
-          >
-            Claude Code
-          </a>
+          © 2026 Oraclous · MIT License
         </span>
       </div>
     </footer>

@@ -6,7 +6,6 @@ import { Loader } from '@/components/layout/Loader'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { ScrollProgress } from '@/components/layout/ScrollProgress'
-import { StoryProgress } from '@/components/layout/StoryProgress'
 import '@/styles/globals.css'
 
 const BASE_URL = 'https://oraclous.com'
@@ -107,7 +106,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Loader />
           <Cursor />
           <ScrollProgress />
-          <StoryProgress />
           <Nav />
           {children}
           <Footer />
