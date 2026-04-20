@@ -37,7 +37,7 @@ export function Loader() {
     /* Count 0 → 100 */
     tl.to(proxy, {
       val: 100,
-      duration: 1.8,
+      duration: 1.0,
       ease: 'power2.inOut',
       onUpdate() {
         count.textContent = String(Math.round(proxy.val))
@@ -47,15 +47,15 @@ export function Loader() {
     .fromTo(
       logo,
       { autoAlpha: 0, y: 16 },
-      { autoAlpha: 1, y: 0, duration: 0.5, ease: 'cubic-bezier(0.16, 1, 0.3, 1)' },
-      '-=0.4'
+      { autoAlpha: 1, y: 0, duration: 0.4, ease: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+      '-=0.3'
     )
     /* Curtain exit */
     .to(container, {
       yPercent: -100,
-      duration: 0.9,
+      duration: 0.7,
       ease: 'cubic-bezier(0.7, 0, 1, 1)',
-      delay: 0.3,
+      delay: 0.2,
     })
 
     return () => { tl.kill() }
