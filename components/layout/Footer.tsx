@@ -50,7 +50,6 @@ const NAV_COLUMNS = [
   {
     heading: 'Resources',
     links: [
-      { label: 'Documentation', href: '/docs' },
       { label: 'GitHub',        href: 'https://github.com/oraclous-ai' },
       { label: 'Changelog',     href: '/roadmap' },
     ],

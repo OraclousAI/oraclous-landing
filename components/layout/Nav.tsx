@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { gsap } from '@/lib/gsap'
 import { EASE, DUR } from '@/lib/gsap'
 import { useUIStore } from '@/stores/ui.store'
@@ -9,13 +10,14 @@ import { useMagnetic } from '@/hooks/useMagnetic'
 
 /* ─── Static data ────────────────────────────────────────────────────── */
 
+/* sectionId: used by scroll-spy on homepage; route: inner-page path if one exists */
 const NAV_LINKS = [
-  { href: '#problem',      label: 'Problem' },
-  { href: '#architecture', label: 'Architecture' },
-  { href: '#loop',         label: 'The Loop' },
-  { href: '#analysis',     label: 'Analysis' },
-  { href: '#agents',       label: 'Agents' },
-  { href: '#roadmap',      label: 'Roadmap' },
+  { href: '/#problem',      label: 'Problem',      sectionId: 'problem',      route: null },
+  { href: '/architecture',  label: 'Architecture', sectionId: 'architecture', route: '/architecture' },
+  { href: '/#loop',         label: 'The Loop',     sectionId: 'loop',         route: null },
+  { href: '/#analysis',     label: 'Analysis',     sectionId: 'analysis',     route: null },
+  { href: '/agents',        label: 'Agents',       sectionId: 'agents',       route: '/agents' },
+  { href: '/roadmap',       label: 'Roadmap',      sectionId: 'roadmap',      route: '/roadmap' },
 ] as const
 
 /* ─── Sub-components ─────────────────────────────────────────────────── */
@@ -64,6 +66,8 @@ export function Nav() {
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
 
+  const pathname          = usePathname()
+  const isHomepage        = pathname === '/'
   const isLoaderComplete  = useUIStore((s) => s.isLoaderComplete)
   const activeSection     = useUIStore((s) => s.activeSection)
   const setActiveSection  = useUIStore((s) => s.setActiveSection)
@@ -76,9 +80,10 @@ export function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  /* Scroll-spy — active section follows viewport ------------------- */
+  /* Scroll-spy — homepage only, uses sectionId -------------------- */
   useEffect(() => {
-    const ids = NAV_LINKS.map(l => l.href.replace('#', ''))
+    if (!isHomepage) return
+    const ids = NAV_LINKS.map(l => l.sectionId)
     const elements = ids.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[]
     if (!elements.length) return
 
@@ -92,7 +97,7 @@ export function Nav() {
     )
     elements.forEach(el => observer.observe(el))
     return () => observer.disconnect()
-  }, [])
+  }, [isHomepage, setActiveSection])
 
   /* Nav entrance after loader --------------------------------------- */
   useEffect(() => {
@@ -221,9 +226,10 @@ export function Nav() {
             style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}
             className="hidden md:flex"
           >
-            {NAV_LINKS.map(({ href, label }) => {
-              const id       = href.replace('#', '')
-              const isActive = activeSection === id
+            {NAV_LINKS.map(({ href, label, sectionId, route }) => {
+              const isActive = route
+                ? pathname === route
+                : isHomepage && activeSection === sectionId
               return (
                 <Link
                   key={href}
