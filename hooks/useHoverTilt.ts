@@ -58,12 +58,30 @@ export function useHoverTilt<T extends HTMLElement = HTMLDivElement>({
       })
     }
 
+    const onTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0]
+      const rect = el.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      const rotY = ((touch.clientX - cx) / (rect.width / 2)) * max
+      const rotX = -((touch.clientY - cy) / (rect.height / 2)) * max
+      gsap.to(el, { rotationX: rotX, rotationY: rotY, duration: 0.3, ease: 'power2.out' })
+    }
+
+    const onTouchEnd = () => {
+      gsap.to(el, { rotationX: 0, rotationY: 0, duration: 0.8, ease: leaveEase })
+    }
+
     el.addEventListener('mousemove', onMove)
     el.addEventListener('mouseleave', onLeave)
+    el.addEventListener('touchmove', onTouchMove, { passive: true })
+    el.addEventListener('touchend', onTouchEnd)
 
     return () => {
       el.removeEventListener('mousemove', onMove)
       el.removeEventListener('mouseleave', onLeave)
+      el.removeEventListener('touchmove', onTouchMove)
+      el.removeEventListener('touchend', onTouchEnd)
       gsap.set(el, { rotationX: 0, rotationY: 0 })
     }
   }, [max, perspective, leaveEase])

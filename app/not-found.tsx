@@ -48,6 +48,7 @@ export default function NotFound() {
           ].join(','),
           backgroundSize: '60px 60px',
           maskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%)',
           pointerEvents: 'none',
         }}
       />

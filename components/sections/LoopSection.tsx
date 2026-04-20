@@ -62,37 +62,40 @@ export function LoopSection() {
         scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
       })
 
-      /* Scroll-driven stage progression — snaps to nearest step */
-      const proxy = { val: 0 }
-      gsap.to(proxy, {
-        val: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: '+=1800',
-          pin: true,
-          anticipatePin: 1,
-          snap: {
-            snapTo: (rawValue: number) => Math.round(rawValue * 10) / 10,
-            duration: { min: 0.2, max: 0.5 },
-            delay: 0,
-            ease: 'power2.inOut',
+      /* Scroll-driven stage progression — desktop only (pin breaks mobile layout) */
+      const mm = gsap.matchMedia()
+      mm.add('(min-width: 768px)', () => {
+        const proxy = { val: 0 }
+        gsap.to(proxy, {
+          val: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: '+=1800',
+            pin: true,
+            anticipatePin: 1,
+            snap: {
+              snapTo: (rawValue: number) => Math.round(rawValue * 10) / 10,
+              duration: { min: 0.2, max: 0.5 },
+              delay: 0,
+              ease: 'power2.inOut',
+            },
+            onUpdate: (self) => {
+              if (isHovering.current) return
+              const raw = self.progress * 10
+              const newIdx = Math.min(9, Math.max(0, Math.floor(raw)))
+              if (newIdx !== scrollIdxRef.current) {
+                scrollIdxRef.current = newIdx
+                setActiveIdx(newIdx)
+              }
+              const intraStep = raw % 1
+              if (arcRef.current) {
+                arcRef.current.style.strokeDashoffset = String(ARC_LEN * (1 - intraStep))
+              }
+            },
           },
-          onUpdate: (self) => {
-            if (isHovering.current) return
-            const raw = self.progress * 10
-            const newIdx = Math.min(9, Math.max(0, Math.floor(raw)))
-            if (newIdx !== scrollIdxRef.current) {
-              scrollIdxRef.current = newIdx
-              setActiveIdx(newIdx)
-            }
-            const intraStep = raw % 1
-            if (arcRef.current) {
-              arcRef.current.style.strokeDashoffset = String(ARC_LEN * (1 - intraStep))
-            }
-          },
-        },
+        })
       })
     }, sectionRef)
     return () => ctx.revert()
