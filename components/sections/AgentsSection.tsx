@@ -186,8 +186,17 @@ for (const agent of agents) {
 const stageGroups = Array.from(stageMap.entries())
 
 export function AgentsSection() {
-  const sectionRef   = useRef<HTMLElement>(null)
+  const sectionRef      = useRef<HTMLElement>(null)
+  const stageGroupRefs  = useRef<Map<string, HTMLDivElement>>(new Map())
   const [activeStage, setActiveStage] = useState<string | null>(null)
+
+  const handleStageSelect = (name: string | null) => {
+    setActiveStage(name)
+    if (name) {
+      const el = stageGroupRefs.current.get(name)
+      el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
 
   /* Scroll entrance */
   useEffect(() => {
@@ -261,7 +270,7 @@ export function AgentsSection() {
         {/* Pipeline visualization */}
         <PipelineBar
           activeStage={activeStage}
-          onSelect={setActiveStage}
+          onSelect={handleStageSelect}
         />
 
         {/* Stage groups */}
@@ -272,10 +281,15 @@ export function AgentsSection() {
             const isActive   = activeStage === stageName
 
             return (
-              <div key={stageName} data-stage-group="" data-stage-name={stageName}>
+              <div
+                key={stageName}
+                data-stage-group=""
+                data-stage-name={stageName}
+                ref={(el) => { if (el) stageGroupRefs.current.set(stageName, el); else stageGroupRefs.current.delete(stageName) }}
+              >
                 {/* Stage header — clickable filter */}
                 <div
-                  onClick={() => setActiveStage(isActive ? null : stageName)}
+                  onClick={() => handleStageSelect(isActive ? null : stageName)}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 'var(--space-4)',
                     marginBottom: 'var(--space-5)', cursor: 'pointer',

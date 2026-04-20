@@ -82,16 +82,14 @@ function AnalysisCard({
       onMouseEnter={onHover}
       onClick={onLock}
       style={{
-        flex: isActive ? '1 1 0' : '0 0 56px',
-        minWidth: isActive ? '280px' : undefined,
-        maxWidth: isActive ? undefined : '56px',
+        flex: isActive ? '1 1 280px' : '0 0 56px',
         overflow: 'hidden', position: 'relative',
         padding: `var(--space-6) ${isActive ? 'var(--space-8)' : 'var(--space-4)'}`,
         background: `linear-gradient(180deg, ${accent.dim} 0%, rgba(13,13,26,0.95) 100%)`,
         border: `1px solid ${isActive ? accent.border : 'var(--color-border)'}`,
         borderRadius: 'var(--radius-lg)',
         cursor: 'pointer',
-        transition: 'flex 0.45s cubic-bezier(0.4,0,0.2,1), min-width 0.45s cubic-bezier(0.4,0,0.2,1), max-width 0.45s cubic-bezier(0.4,0,0.2,1), padding 0.35s, border-color 0.3s',
+        transition: 'flex 0.45s cubic-bezier(0.4,0,0.2,1), padding 0.35s, border-color 0.3s',
       }}
     >
       {/* Always-visible: number + label */}
@@ -261,7 +259,6 @@ export function AnalysisSection() {
         {/* Horizontal accordion */}
         <div
           ref={containerRef}
-          onMouseLeave={() => setActiveIdx(lockedIdx)}
           style={{
             display: 'flex', gap: 'var(--space-2)',
             height: '400px', alignItems: 'stretch',
