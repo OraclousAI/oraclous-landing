@@ -14,7 +14,7 @@ const STAT_ITEMS = [
   { value: '18', label: 'Specialist Agents' },
   { value: '10', label: 'Automation Stages' },
   { value: '58+', label: 'Test Suites' },
-  { value: 'MIT', label: 'Open Source' },
+  { value: '0', label: 'Data Egress' },
 ]
 
 const RING_COLORS = [
@@ -141,6 +141,7 @@ export function HeroSection() {
         .fromTo('[data-hero-line1]',   { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: DUR.emphasis, ease: EASE.entrance }, '-=0.2')
         .fromTo('[data-hero-line2]',   { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: DUR.emphasis, ease: EASE.entrance }, '-=0.55')
         .fromTo('[data-hero-sub]',     { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: EASE.entrance }, '-=0.4')
+        .fromTo('[data-hero-role]',    { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: EASE.entrance }, '-=0.3')
         .fromTo('[data-hero-ctas]',    { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: EASE.entrance }, '-=0.3')
         .fromTo('[data-hero-stat]',    { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: EASE.entrance, stagger: 0.08 }, '-=0.2')
         .fromTo(ringRef.current,       { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 1.2, ease: EASE.entrance }, '-=0.5')
@@ -260,11 +261,6 @@ export function HeroSection() {
             willChange: 'transform',
           }}
         >
-          {/* Role selector */}
-          <div style={{ marginBottom: '1.25rem' }}>
-            <RoleSelector onRoleChange={setRole} />
-          </div>
-
           {/* Eyebrow */}
           <div data-hero-eyebrow="" style={{ marginBottom: '2rem' }}>
             <span style={{
@@ -281,7 +277,7 @@ export function HeroSection() {
                 backgroundColor: 'var(--color-accent)',
                 animation: 'pulse-ring 2s ease-in-out infinite',
               }} />
-              Open-Source FTOps Platform
+              Open-Source · Self-Hosted · MIT License
             </span>
           </div>
 
@@ -310,12 +306,17 @@ export function HeroSection() {
           <p ref={subRef} data-hero-sub="" style={{
             fontSize: 'var(--text-base)', lineHeight: 'var(--leading-relaxed)',
             color: 'var(--color-text-secondary)',
-            maxWidth: isMobile ? '100%' : '440px', marginBottom: '2.5rem',
+            maxWidth: isMobile ? '100%' : '440px', marginBottom: '1.75rem',
           }}>
             {role
               ? HERO_SUBS[role]
-              : 'Your team is spending engineering cycles on dataset curation, training reruns, and deployment scripts instead of improving the model. Oraclous replaces that with 18 specialist agents and a self-improving loop — fully automated, fully on your infra.'}
+              : '18 specialist agents that automate your entire fine-tuning lifecycle — from dataset curation to deployment — on your infrastructure, under MIT license.'}
           </p>
+
+          {/* Role selector — opt-in personalization after reading the default sub */}
+          <div data-hero-role="" style={{ marginBottom: '2.5rem' }}>
+            <RoleSelector onRoleChange={setRole} />
+          </div>
 
           {/* CTAs */}
           <div data-hero-ctas="" style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-start', marginBottom: '3.5rem', flexWrap: 'wrap' }}>
@@ -338,11 +339,11 @@ export function HeroSection() {
                 <line x1="8" y1="2" x2="8" y2="6" />
                 <line x1="3" y1="10" x2="21" y2="10" />
               </svg>
-              Book a Free AI Strategy Call.
+              Book a Technical Architecture Call
             </a>
             <a
               ref={ghostRef}
-              href="#loop"
+              href="#products"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
                 padding: '0.6rem 1rem',
@@ -362,7 +363,7 @@ export function HeroSection() {
                 e.currentTarget.style.color = 'var(--color-text-secondary)'
               }}
             >
-              Explore the loop →
+              See how it works ↓
             </a>
           </div>
 
@@ -397,7 +398,7 @@ export function HeroSection() {
         </div>
 
         {/* Ring visualization */}
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--space-4)' }}>
+        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 'var(--space-4)' }}>
           <svg ref={ringRef} viewBox="-20 -20 440 440" width="100%" style={{ display: 'block', overflow: 'visible', opacity: 0, maxWidth: isMobile ? '280px' : '520px' }} data-hero-ring="">
             {/* Outer subtle ring */}
             <circle cx={CX} cy={CY} r={R + 22} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
@@ -441,6 +442,16 @@ export function HeroSection() {
             <text x={CX} y={CY + 24} textAnchor="middle" fontFamily="monospace" fontSize="8"
               letterSpacing="1" fill="rgba(255,255,255,0.12)">10 STAGES</text>
           </svg>
+          {!isMobile && (
+            <p style={{
+              marginTop: 'var(--space-3)',
+              fontFamily: 'var(--font-mono)', fontSize: '11px',
+              color: 'var(--color-text-muted)', letterSpacing: 'var(--tracking-wide)',
+              textAlign: 'center',
+            }}>
+              10-stage autonomous loop · hover any node to explore
+            </p>
+          )}
         </div>
 
       </div>

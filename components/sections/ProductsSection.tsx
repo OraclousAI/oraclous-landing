@@ -7,6 +7,19 @@ import { prefersReducedMotion } from '@/lib/motion'
 import { FadeUp } from '@/components/animation/FadeUp'
 import { WordReveal } from '@/components/animation/WordReveal'
 
+const PRINCIPLES = [
+  { label: 'Open Source',       color: '#4361EE', dim: 'rgba(67,97,238,0.1)',   border: 'rgba(67,97,238,0.3)',   tip: 'Platform, agents, and framework are fully open source. No black boxes.' },
+  { label: 'No Vendor Lock-In', color: '#8B5CF6', dim: 'rgba(139,92,246,0.1)', border: 'rgba(139,92,246,0.3)', tip: 'Every artifact you produce is portable. Escape velocity is documented, not promised.' },
+  { label: 'Data Ownership',    color: '#22C55E', dim: 'rgba(34,197,94,0.1)',   border: 'rgba(34,197,94,0.3)',   tip: 'Your data never leaves your infrastructure. Not to Oraclous. Not to anyone.' },
+  { label: 'Self-Hosted',       color: '#F97316', dim: 'rgba(249,115,22,0.1)',  border: 'rgba(249,115,22,0.3)',  tip: 'Runs on your VPC, on-prem, or sovereign cloud. No egress. No external dependencies.' },
+]
+
+const LAYER_STATUS = [
+  { label: 'Layer 1 available', color: '#22C55E' },
+  { label: 'Layer 2 available', color: '#22C55E' },
+  { label: 'Layer 3 — H2 2026', color: '#EAB308' },
+]
+
 const PRODUCTS = [
   {
     layer: 'Layer 1',
@@ -173,10 +186,10 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
     <div
       ref={cardRef}
       style={{
-        perspective: '1200px',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
+        perspective: "1200px",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <div
@@ -185,99 +198,188 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
         onClick={handleClick}
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
-        onMouseEnter={(e) => { e.currentTarget.style.boxShadow = accentGlow }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.boxShadow = accentGlow;
+        }}
         style={{
-          position: 'relative',
-          transformStyle: 'preserve-3d',
+          position: "relative",
+          transformStyle: "preserve-3d",
           flex: 1,
-          minHeight: '520px',
-          willChange: 'transform',
-          cursor: 'pointer',
-          transition: 'box-shadow 0.3s',
+          minHeight: "600px",
+          willChange: "transform",
+          cursor: "pointer",
+          transition: "box-shadow 0.3s",
         }}
       >
         {/* Front face */}
-        <div style={{
-          backfaceVisibility: 'hidden',
-          WebkitBackfaceVisibility: 'hidden',
-          position: 'absolute', inset: 0,
-          background: 'var(--color-bg-surface)',
-          border: `1px solid ${accentBorder}`,
-          borderRadius: 'var(--radius-xl)',
-          overflow: 'hidden',
-          display: 'flex', flexDirection: 'column',
-        }}>
+        <div
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            position: "absolute",
+            inset: 0,
+            background: "var(--color-bg-surface)",
+            border: `1px solid ${accentBorder}`,
+            borderRadius: "var(--radius-xl)",
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           {/* Spotlight */}
-          <div ref={spotRef} aria-hidden="true" style={{
-            position: 'absolute', inset: 0, pointerEvents: 'none',
-            opacity: 0, transition: 'opacity 0.3s', zIndex: 0,
-          }} />
+          <div
+            ref={spotRef}
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              opacity: 0,
+              transition: "opacity 0.3s",
+              zIndex: 0,
+            }}
+          />
 
           {/* Gradient header band */}
-          <div style={{
-            position: 'relative', zIndex: 1,
-            padding: 'var(--space-6) var(--space-8)',
-            background: `linear-gradient(135deg, ${accentDim.replace('0.08', '0.15')} 0%, ${accentDim.replace('0.08', '0.05')} 100%)`,
-            borderBottom: `1px solid ${accentBorder}`,
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--space-4)' }}>
-              <span style={{
-                fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
-                color: accent, letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase',
-                fontWeight: 600,
-              }}>{layer}</span>
-              <span style={{
-                fontFamily: 'var(--font-mono)', fontSize: '10px',
-                color: badgeColor,
-                background: `${badgeColor}15`,
-                border: `1px solid ${badgeColor}40`,
-                borderRadius: 'var(--radius-full)', padding: '0.2rem 0.6rem',
-                whiteSpace: 'nowrap',
-              }}>{badge}</span>
+          <div
+            style={{
+              position: "relative",
+              zIndex: 1,
+              padding: "var(--space-6) var(--space-8)",
+              background: `linear-gradient(135deg, ${accentDim.replace("0.08", "0.15")} 0%, ${accentDim.replace("0.08", "0.05")} 100%)`,
+              borderBottom: `1px solid ${accentBorder}`,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                marginBottom: "var(--space-4)",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-xs)",
+                  color: accent,
+                  letterSpacing: "var(--tracking-widest)",
+                  textTransform: "uppercase",
+                  fontWeight: 600,
+                }}
+              >
+                {layer}
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "10px",
+                  color: badgeColor,
+                  background: `${badgeColor}15`,
+                  border: `1px solid ${badgeColor}40`,
+                  borderRadius: "var(--radius-full)",
+                  padding: "0.2rem 0.6rem",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {badge}
+              </span>
             </div>
-            <h3 style={{
-              fontFamily: 'var(--font-display)', fontWeight: 700,
-              fontSize: 'var(--text-2xl)', color: 'var(--color-text-primary)',
-              marginBottom: '0.4rem',
-            }}>{name}</h3>
-            <p style={{
-              fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)',
-              lineHeight: 'var(--leading-snug)', fontStyle: 'italic',
-            }}>{tagline}</p>
+            <h3
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontSize: "var(--text-xl)",
+                color: "var(--color-text-primary)",
+                marginBottom: "0.4rem",
+              }}
+            >
+              {name}
+            </h3>
+            <p
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "var(--color-text-secondary)",
+                lineHeight: "var(--leading-snug)",
+                fontStyle: "italic",
+              }}
+            >
+              {tagline}
+            </p>
           </div>
 
           {/* Body */}
-          <div style={{
-            position: 'relative', zIndex: 1,
-            flex: 1, padding: 'var(--space-8)',
-            display: 'flex', flexDirection: 'column', gap: 'var(--space-6)',
-          }}>
-            <p style={{
-              fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-relaxed)',
-              color: 'var(--color-text-tertiary)',
-            }}>{description}</p>
+          <div
+            style={{
+              position: "relative",
+              zIndex: 1,
+              flex: 1,
+              padding: "var(--space-8)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--space-6)",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "var(--text-sm)",
+                lineHeight: "var(--leading-relaxed)",
+                color: "var(--color-text-tertiary)",
+              }}
+            >
+              {description}
+            </p>
 
-            <ul style={{
-              marginTop: 'auto',
-              paddingTop: 'var(--space-5)',
-              borderTop: '1px solid var(--color-border)',
-              display: 'flex', flexDirection: 'column', gap: 'var(--space-2)',
-              listStyle: 'none',
-            }}>
+            <ul
+              style={{
+                marginTop: "auto",
+                paddingTop: "var(--space-5)",
+                borderTop: "1px solid var(--color-border)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "var(--space-2)",
+                listStyle: "none",
+              }}
+            >
               {features.map((feat) => (
-                <li key={feat} style={{
-                  display: 'flex', alignItems: 'flex-start',
-                  gap: 'var(--space-3)', fontSize: 'var(--text-xs)',
-                  color: 'var(--color-text-secondary)',
-                }}>
-                  <span style={{
-                    width: '14px', height: '14px', flexShrink: 0,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: `${accent}20`, border: `1px solid ${accentBorder}`,
-                    borderRadius: 'var(--radius-sm)', marginTop: '1px',
-                  }}>
-                    <svg width="8" height="6" viewBox="0 0 8 6" fill="none" aria-hidden="true">
-                      <path d="M1 3l2 2 4-4" stroke={accent} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <li
+                  key={feat}
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "var(--space-3)",
+                    fontSize: "var(--text-xs)",
+                    color: "var(--color-text-secondary)",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: "14px",
+                      height: "14px",
+                      flexShrink: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: `${accent}20`,
+                      border: `1px solid ${accentBorder}`,
+                      borderRadius: "var(--radius-sm)",
+                      marginTop: "1px",
+                    }}
+                  >
+                    <svg
+                      width="8"
+                      height="6"
+                      viewBox="0 0 8 6"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M1 3l2 2 4-4"
+                        stroke={accent}
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </span>
                   {feat}
@@ -286,55 +388,129 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
             </ul>
           </div>
 
-          {/* Flip hint */}
-          {!isFlipped && (
-            <div aria-hidden="true" style={{
-              position: 'absolute', bottom: '1rem', right: '1rem',
-              fontFamily: 'var(--font-mono)', fontSize: '9px',
-              color: `${accent}70`, letterSpacing: 'var(--tracking-wide)',
-              textTransform: 'uppercase',
-            }}>
-              Click to explore →
-            </div>
-          )}
+          {/* Flip hint — proper affordance */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "var(--space-2)",
+              right: "var(--space-2)",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                color: accent,
+                letterSpacing: "var(--tracking-wide)",
+                background: `${accent}12`,
+                border: `1px solid ${accent}35`,
+                borderRadius: "var(--radius-full)",
+                padding: "0.3rem 0.75rem",
+                userSelect: "none",
+              }}
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M2 6a4 4 0 1 0 4-4"
+                  stroke="currentColor"
+                  strokeWidth="1.3"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M6 2L4 4l2 2"
+                  stroke="currentColor"
+                  strokeWidth="1.3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              {isFlipped ? "Flip back" : "view"}
+            </span>
+          </div>
         </div>
 
         {/* Back face */}
-        <div style={{
-          backfaceVisibility: 'hidden',
-          WebkitBackfaceVisibility: 'hidden',
-          position: 'absolute', inset: 0,
-          transform: 'rotateY(180deg)',
-          background: `linear-gradient(135deg, ${accentDim.replace('0.08', '0.12')} 0%, var(--color-bg-surface) 100%)`,
-          border: `1px solid ${accentBorder}`,
-          borderRadius: 'var(--radius-xl)',
-          overflow: 'hidden',
-          display: 'flex', flexDirection: 'column',
-          padding: 'var(--space-8)',
-        }}>
+        <div
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            position: "absolute",
+            inset: 0,
+            transform: "rotateY(180deg)",
+            background: `linear-gradient(135deg, ${accentDim.replace("0.08", "0.12")} 0%, var(--color-bg-surface) 100%)`,
+            border: `1px solid ${accentBorder}`,
+            borderRadius: "var(--radius-xl)",
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+            padding: "var(--space-8)",
+          }}
+        >
           {/* Back face header */}
-          <div style={{ marginBottom: 'var(--space-5)' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: accent, letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase' }}>
+          <div style={{ marginBottom: "var(--space-5)" }}>
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                color: accent,
+                letterSpacing: "var(--tracking-widest)",
+                textTransform: "uppercase",
+              }}
+            >
               {layer} · Technical View
             </span>
-            <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'var(--text-lg)', color: 'var(--color-text-primary)', marginTop: '0.5rem' }}>
+            <h4
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontSize: "var(--text-lg)",
+                color: "var(--color-text-primary)",
+                marginTop: "0.5rem",
+              }}
+            >
               {name}
             </h4>
           </div>
 
           {/* Mini diagram */}
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <BackDiagram product={product} />
           </div>
 
           {/* Click hint */}
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-text-muted)', textAlign: 'center', marginTop: 'var(--space-4)' }}>
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "10px",
+              color: "var(--color-text-muted)",
+              textAlign: "center",
+              marginTop: "var(--space-4)",
+            }}
+          >
             Click to flip back
           </p>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export function ProductsSection() {
@@ -367,7 +543,7 @@ export function ProductsSection() {
       <div style={{ maxWidth: 'var(--max-w-content)', margin: '0 auto' }}>
 
         {/* Header */}
-        <div style={{ maxWidth: '640px', marginBottom: 'var(--section-gap)' }}>
+        <div style={{ marginBottom: 'var(--section-gap)' }}>
           <FadeUp>
             <p style={{
               fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
@@ -381,10 +557,59 @@ export function ProductsSection() {
               fontFamily: 'var(--font-display)', fontWeight: 700,
               fontSize: 'var(--text-3xl)', lineHeight: 'var(--leading-tight)',
               letterSpacing: 'var(--tracking-tight)', color: 'var(--color-text-primary)',
+              marginBottom: 'var(--space-6)',
             }}
           >
             Three products. One platform.
           </WordReveal>
+
+          {/* Availability status bar */}
+          <FadeUp delay={0.1}>
+            <div style={{
+              display: 'flex', alignItems: 'center', flexWrap: 'wrap',
+              gap: 'var(--space-4)', marginBottom: 'var(--space-6)',
+            }}>
+              {LAYER_STATUS.map(({ label, color }) => (
+                <span key={label} style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                  fontFamily: 'var(--font-mono)', fontSize: '11px',
+                  color, letterSpacing: 'var(--tracking-wide)',
+                }}>
+                  <span style={{
+                    width: '7px', height: '7px', borderRadius: '50%',
+                    backgroundColor: color,
+                    boxShadow: `0 0 6px ${color}`,
+                  }} />
+                  {label}
+                </span>
+              ))}
+            </div>
+          </FadeUp>
+
+          {/* Principles chips */}
+          <FadeUp delay={0.15}>
+            <div style={{
+              display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)',
+              paddingTop: 'var(--space-4)',
+              borderTop: '1px solid var(--color-border)',
+            }}>
+              {PRINCIPLES.map(({ label, color, dim, border, tip }) => (
+                <span
+                  key={label}
+                  title={tip}
+                  style={{
+                    fontFamily: 'var(--font-mono)', fontSize: '11px',
+                    letterSpacing: 'var(--tracking-wide)',
+                    color, background: dim, border: `1px solid ${border}`,
+                    borderRadius: 'var(--radius-full)', padding: '0.3rem 0.75rem',
+                    cursor: 'default', whiteSpace: 'nowrap',
+                  }}
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
+          </FadeUp>
         </div>
 
         {/* Product cards */}

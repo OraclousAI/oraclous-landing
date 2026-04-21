@@ -17,9 +17,8 @@ import { useIsMobile } from '@/hooks/useMediaQuery'
 /* sectionId: used by scroll-spy on homepage; route: inner-page path if one exists */
 const NAV_LINKS = [
   { href: '/#problem',      label: 'Problem',      sectionId: 'problem',      route: null },
-  { href: '/architecture',  label: 'Architecture', sectionId: 'architecture', route: '/architecture' },
-  { href: '/#loop',         label: 'The Loop',     sectionId: 'loop',         route: null },
-  { href: '/#analysis',     label: 'Analysis',     sectionId: 'analysis',     route: null },
+  { href: '/#products',     label: 'Products',     sectionId: 'products',     route: null },
+  { href: '/architecture', label: 'How It Works', sectionId: 'architecture', route: null },
   { href: '/agents',        label: 'Agents',       sectionId: 'agents',       route: '/agents' },
   { href: '/roadmap',       label: 'Roadmap',      sectionId: 'roadmap',      route: '/roadmap' },
 ] as const

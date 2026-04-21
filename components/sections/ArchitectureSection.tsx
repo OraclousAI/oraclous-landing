@@ -8,6 +8,24 @@ import { prefersReducedMotion } from '@/lib/motion'
 import { WordReveal } from '@/components/animation/WordReveal'
 import { FadeUp } from '@/components/animation/FadeUp'
 
+const WHY_KG_POINTS = [
+  {
+    color: '#4361EE',
+    title: 'Context that compounds',
+    body: 'A flat vector store forgets structure. A knowledge graph remembers that entity A caused event B, which contradicts claim C from 6 months ago. That relational memory is what makes fine-tuned models actually reason.',
+  },
+  {
+    color: '#8B5CF6',
+    title: 'Analysis only possible at graph level',
+    body: "You can't run Leiden community detection on a text file. You can't detect bitemporal drift in a vector index. Graph structure unlocks eight classes of analysis that vector search fundamentally cannot do.",
+  },
+  {
+    color: '#06B6D4',
+    title: 'Training data that knows its own gaps',
+    body: "Coverage analysis surfaces what should be in your knowledge base but isn't. Link prediction surfaces facts that are probably true. These gaps are training gold — invisible without graph structure.",
+  },
+]
+
 const LAYERS = [
   {
     num: 'L3',
@@ -247,7 +265,9 @@ function LayerCard({ layer, isHovered, isCascade, onHover, onLeave }: {
 
 export function ArchitectureSection() {
   const sectionRef  = useRef<HTMLElement>(null)
+  const whyKgRef    = useRef<HTMLDivElement>(null)
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
+  const [whyKgOpen, setWhyKgOpen]   = useState(false)
   const isMobile = useIsMobile()
 
   useEffect(() => {
@@ -343,6 +363,124 @@ export function ArchitectureSection() {
           }}>
             Each layer ships independently · All three together form the complete FTOps platform
           </p>
+        </FadeUp>
+
+        {/* Why a knowledge graph? — expandable */}
+        <FadeUp delay={0.5}>
+          <div style={{ marginTop: 'var(--space-10)' }}>
+            <button
+              type="button"
+              onClick={() => {
+                const next = !whyKgOpen
+                setWhyKgOpen(next)
+                if (!prefersReducedMotion() && whyKgRef.current) {
+                  gsap.to(whyKgRef.current, {
+                    height: next ? 'auto' : 0,
+                    opacity: next ? 1 : 0,
+                    duration: 0.4,
+                    ease: next ? 'power2.out' : 'power2.in',
+                  })
+                }
+              }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 'var(--space-3)',
+                width: '100%', background: 'none', border: 'none', cursor: 'pointer',
+                padding: 'var(--space-5) var(--space-6)',
+                borderRadius: 'var(--radius-lg)',
+                backgroundColor: whyKgOpen ? 'rgba(67,97,238,0.06)' : 'var(--color-bg-surface)',
+                borderTop: '1px solid var(--color-border)',
+                borderRight: '1px solid var(--color-border)',
+                borderBottom: `1px solid ${whyKgOpen ? 'rgba(67,97,238,0.25)' : 'var(--color-border)'}`,
+                borderLeft: `3px solid ${whyKgOpen ? '#4361EE' : 'var(--color-border)'}`,
+                transition: 'background-color 0.3s, border-color 0.3s',
+              }}
+            >
+              <span style={{
+                fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)',
+                letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase',
+                color: 'var(--color-text-tertiary)',
+              }}>Why not just use vector search?</span>
+              <span style={{
+                flex: 1, height: '1px',
+                background: `linear-gradient(to right, ${whyKgOpen ? 'rgba(67,97,238,0.4)' : 'var(--color-border)'}, transparent)`,
+                transition: 'background 0.3s',
+              }} />
+              <svg
+                width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+                style={{
+                  color: whyKgOpen ? '#4361EE' : 'var(--color-text-muted)',
+                  transition: 'transform 0.3s, color 0.3s',
+                  transform: whyKgOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  flexShrink: 0,
+                }}
+              >
+                <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            <div
+              ref={whyKgRef}
+              style={{ height: 0, overflow: 'hidden', opacity: 0 }}
+            >
+              <div style={{
+                padding: isMobile ? 'var(--space-6)' : 'var(--space-8) var(--space-6)',
+                background: 'rgba(67,97,238,0.03)',
+                border: '1px solid rgba(67,97,238,0.15)',
+                borderTop: 'none',
+                borderRadius: '0 0 var(--radius-lg) var(--radius-lg)',
+              }}>
+                <blockquote style={{
+                  padding: 'var(--space-5) var(--space-6)',
+                  background: 'linear-gradient(135deg, rgba(67,97,238,0.1) 0%, rgba(139,92,246,0.06) 100%)',
+                  border: '1px solid rgba(67,97,238,0.25)',
+                  borderLeft: '3px solid #4361EE',
+                  borderRadius: 'var(--radius-lg)',
+                  marginBottom: 'var(--space-6)',
+                }}>
+                  <p style={{
+                    fontFamily: 'var(--font-display)', fontWeight: 700,
+                    fontSize: 'var(--text-base)', color: 'var(--color-text-primary)',
+                    lineHeight: 'var(--leading-snug)', fontStyle: 'italic',
+                  }}>
+                    "A vector database tells you what's similar. A knowledge graph tells you
+                    what's related, what's missing, what contradicts, and what's changed."
+                  </p>
+                </blockquote>
+
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+                  gap: 'var(--space-4)',
+                }}>
+                  {WHY_KG_POINTS.map(({ color, title, body }) => (
+                    <div key={title} style={{
+                      padding: 'var(--space-5) var(--space-6)',
+                      background: 'var(--color-bg-surface)',
+                      border: '1px solid var(--color-border)',
+                      borderLeft: `3px solid ${color}`,
+                      borderRadius: 'var(--radius-lg)',
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
+                        <span style={{
+                          width: '7px', height: '7px', borderRadius: '50%',
+                          backgroundColor: color, flexShrink: 0,
+                        }} />
+                        <h4 style={{
+                          fontFamily: 'var(--font-display)', fontWeight: 700,
+                          fontSize: 'var(--text-base)', color: 'var(--color-text-primary)',
+                          lineHeight: 'var(--leading-snug)',
+                        }}>{title}</h4>
+                      </div>
+                      <p style={{
+                        fontSize: 'var(--text-sm)', lineHeight: 'var(--leading-relaxed)',
+                        color: 'var(--color-text-tertiary)',
+                      }}>{body}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </FadeUp>
 
       </div>

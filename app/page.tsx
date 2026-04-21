@@ -34,6 +34,9 @@ const ProblemSection = dynamic(() =>
 const FTOpsSection = dynamic(() =>
   import('@/components/sections/FTOpsSection').then(m => ({ default: m.FTOpsSection }))
 )
+const ProductsSection = dynamic(() =>
+  import('@/components/sections/ProductsSection').then(m => ({ default: m.ProductsSection }))
+)
 const ArchitectureSection = dynamic(() =>
   import('@/components/sections/ArchitectureSection').then(m => ({ default: m.ArchitectureSection }))
 )
@@ -46,15 +49,6 @@ const AnalysisSection = dynamic(() =>
 const AgentsSection = dynamic(() =>
   import('@/components/sections/AgentsSection').then(m => ({ default: m.AgentsSection }))
 )
-const WhyKGSection = dynamic(() =>
-  import('@/components/sections/WhyKGSection').then(m => ({ default: m.WhyKGSection }))
-)
-const PrinciplesSection = dynamic(() =>
-  import('@/components/sections/PrinciplesSection').then(m => ({ default: m.PrinciplesSection }))
-)
-const ProductsSection = dynamic(() =>
-  import('@/components/sections/ProductsSection').then(m => ({ default: m.ProductsSection }))
-)
 const RoadmapSection = dynamic(() =>
   import('@/components/sections/RoadmapSection').then(m => ({ default: m.RoadmapSection }))
 )
@@ -66,7 +60,7 @@ const CtaSection = dynamic(() =>
 
 const OBSERVED_SECTIONS = [
   'problem',
-  'ftops',
+  'products',
   'architecture',
   'loop',
   'agents',
@@ -79,23 +73,20 @@ export default function HomePage() {
   return (
     <main style={{ backgroundColor: 'var(--color-bg-void)' }}>
       <HeroSection />
-      <MetricsSection />
       <SectionBridge text="Before the product: the problem it exists to solve." />
       <ProblemSection />
       <SectionBridge text="There's a common root cause behind all three: fine-tuning has never had its own operational framework. That's what we built." />
       <FTOpsSection />
-      <SectionBridge text="FTOps needs infrastructure. Here's the three-layer architecture that makes it run." />
+      <SectionBridge text="FTOps needs a product suite to run on. Here's what you can deploy today." />
+      <ProductsSection />
+      <SectionBridge text="Three products, one foundation. Here's the architecture that connects all three layers." />
       <ArchitectureSection />
       <SectionBridge text="Layer 3 — the FTOps team — runs on a specific 10-stage loop. Here's exactly how it works." />
       <LoopSection />
       <SectionBridge text="Stage 3 runs 8 analysis agents in parallel. Here's who they are and what they're looking for." />
       <AnalysisSection />
       <AgentsSection />
-      <SectionBridge text="The agents work over a knowledge graph. Here's why that matters more than you might expect." />
-      <WhyKGSection />
-      <SectionBridge text="The graph is the foundation. What you build on it is governed by four non-negotiables." />
-      <PrinciplesSection />
-      <ProductsSection />
+      <MetricsSection />
       <RoadmapSection />
       <CtaSection />
     </main>
